@@ -40,9 +40,9 @@ const Footer = () => {
                     <div>
                         <h3 className="text-slate-900 font-bold mb-6">Quick Links</h3>
                         <ul className="space-y-3">
-                            {['Buy', 'Rent', 'Commercial', 'New Projects', 'Find an Agent'].map((item) => (
+                            {['Buy', 'Rent', 'Commercial', 'New Projects', 'Careers'].map((item) => (
                                 <li key={item}>
-                                    <a href="#" className="text-slate-600 hover:text-primary text-sm transition-colors">
+                                    <a href={item === 'Careers' ? '/careers' : '#'} className="text-slate-600 hover:text-primary text-sm transition-colors">
                                         {item}
                                     </a>
                                 </li>

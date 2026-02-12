@@ -5,14 +5,29 @@ const Contact = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState('idle'); // idle, submitting, success
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('submitting');
-        // Simulate API call
-        setTimeout(() => {
-            setStatus('success');
-            setFormData({ name: '', email: '', message: '' });
-        }, 1500);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/leads`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                alert('Failed to send message. Please try again.');
+                setStatus('idle');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            alert('Error sending message.');
+            setStatus('idle');
+        }
     };
 
     return (

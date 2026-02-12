@@ -50,10 +50,10 @@ const Navbar = () => {
                         <button className="p-2 text-slate-600 hover:text-primary transition-colors rounded-full hover:bg-slate-100/50">
                             <Search size={20} />
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full shadow-lg hover:shadow-primary/30 transition-shadow">
+                        <Link to="/login" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full shadow-lg hover:shadow-primary/30 transition-shadow">
                             <User size={18} />
                             <span className="text-sm font-medium">Login</span>
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Mobile menu button */}
@@ -83,10 +83,10 @@ const Navbar = () => {
                             </Link>
                         ))}
                         <div className="pt-4 pb-2 border-t border-slate-100">
-                            <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-xl shadow-md">
+                            <Link to="/login" onClick={() => setIsOpen(false)} className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-xl shadow-md">
                                 <User size={18} />
                                 <span>Login / Register</span>
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
