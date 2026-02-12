@@ -1,0 +1,7 @@
+node_modules
+.env
+.DS_Store
+dist
+coverage
+.vscode
+backend/property-ecommerce-firebase-adminsdk-fbsvc-11eb61272a.json
