@@ -35,32 +35,38 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?search=${query}`);
                 const data = await response.json();
 
-                // Process Property Suggestions
-                const propertySuggestions = data.map(p => ({
-                    type: 'Property',
-                    text: p.title,
-                    image: p.images?.[0] || 'https://placehold.co/100x100?text=No+Image',
-                    price: p.price
-                }));
+                // Defensive check: ensure data is an array
+                if (Array.isArray(data)) {
+                    // Process Property Suggestions
+                    const propertySuggestions = data.map(p => ({
+                        type: 'Property',
+                        text: p.title,
+                        image: p.images?.[0] || 'https://placehold.co/100x100?text=No+Image',
+                        price: p.price
+                    }));
 
-                // Process Location Suggestions (Unique)
-                const existingLocations = new Set();
-                const locationSuggestions = [];
-                data.forEach(p => {
-                    if (!existingLocations.has(p.location)) {
-                        existingLocations.add(p.location);
-                        locationSuggestions.push({
-                            type: 'Location',
-                            text: p.location,
-                            image: null
-                        });
-                    }
-                });
+                    // Process Location Suggestions (Unique)
+                    const existingLocations = new Set();
+                    const locationSuggestions = [];
+                    data.forEach(p => {
+                        if (!existingLocations.has(p.location)) {
+                            existingLocations.add(p.location);
+                            locationSuggestions.push({
+                                type: 'Location',
+                                text: p.location,
+                                image: null
+                            });
+                        }
+                    });
 
-                // Combine and limit
-                const combined = [...propertySuggestions, ...locationSuggestions].slice(0, 5);
-                setSuggestions(combined);
-                setShowSuggestions(true);
+                    // Combine and limit
+                    const combined = [...propertySuggestions, ...locationSuggestions].slice(0, 5);
+                    setSuggestions(combined);
+                    setShowSuggestions(true);
+                } else {
+                    console.error('API returned non-array data for suggestions:', data);
+                    setSuggestions([]);
+                }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
             }
