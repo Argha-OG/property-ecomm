@@ -14,7 +14,6 @@ const Buy = () => {
         minPrice: '',
         maxPrice: '',
         bedrooms: '',
-        bedrooms: '',
         minSize: '',
         maxSize: '',
         minLandArea: '',
@@ -37,7 +36,6 @@ const Buy = () => {
                 if (filters.minPrice) params.append('minPrice', filters.minPrice);
                 if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
                 if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
-                if (filters.minSize) params.append('minSize', filters.minSize);
                 if (filters.minSize) params.append('minSize', filters.minSize);
                 if (filters.maxSize) params.append('maxSize', filters.maxSize);
                 if (filters.minLandArea) params.append('minLandArea', filters.minLandArea);
@@ -82,7 +80,6 @@ const Buy = () => {
             minPrice: searchParams.get('minPrice') || '',
             maxPrice: searchParams.get('maxPrice') || '',
             bedrooms: searchParams.get('bedrooms') || '',
-            minSize: searchParams.get('minSize') || '',
             minSize: searchParams.get('minSize') || '',
             maxSize: searchParams.get('maxSize') || '',
             minLandArea: searchParams.get('minLandArea') || '',

@@ -14,7 +14,6 @@ const Rent = () => {
         minPrice: '',
         maxPrice: '',
         bedrooms: '',
-        bedrooms: '',
         minSize: '',
         maxSize: '',
         minLandArea: '',
@@ -37,7 +36,6 @@ const Rent = () => {
                 if (filters.minPrice) params.append('minPrice', filters.minPrice);
                 if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
                 if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
-                if (filters.minSize) params.append('minSize', filters.minSize);
                 if (filters.minSize) params.append('minSize', filters.minSize);
                 if (filters.maxSize) params.append('maxSize', filters.maxSize);
                 if (filters.minLandArea) params.append('minLandArea', filters.minLandArea);
