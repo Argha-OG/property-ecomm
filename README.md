@@ -1,114 +1,113 @@
 # Property Ecommerce Platform (Demo JK)
 
 ## 📌 Project Overview
-This project is a modern, full-stack real estate property e-commerce platform designed to facilitate buying, renting, and discovering new property launches. It features a responsive glassmorphism UI, a comprehensive admin dashboard, and robust search capabilities.
+The **Demo JK Property Platform** is a modern, full-stack real estate application designed to revolutionize how users discover, buy, and rent properties. Built with the MERN stack and enhanced with AI capabilities, it offers valid search tools, financial calculators, and a seamless comparison engine, all wrapped in a stunning glassmorphism UI.
 
 ## 🛠️ Technology Stack
 
 ### Frontend
-- **Framework:** [React](https://react.dev/) (v19) with [Vite](https://vitejs.dev/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Routing:** [React Router DOM](https://reactrouter.com/) (v7)
+- **Framework:** [React](https://react.dev/) (v18+) with [Vite](https://vitejs.dev/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with Custom Glassmorphism Theme
+- **Routing:** [React Router DOM](https://reactrouter.com/) (v6)
+- **State Management:** React Context API (Auth, Language, Comparison)
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Animations:** [Framer Motion](https://www.framer.com/motion/) & [AOS](https://michalsnik.github.io/aos/)
-- **Forms/Notifications:** React Hot Toast
+- **Notifications:** React Hot Toast
 - **SEO:** React Helmet Async
-- **Authentication:** Firebase Client SDK (Planned integration)
 
 ### Backend
-- **Runtime:** [Node.js](https://nodejs.org/)
-- **Framework:** [Express.js](https://expressjs.com/)
-- **Database:** [MongoDB](https://www.mongodb.com/) (via Mongoose)
-- **File Storage:** Local storage using [Multer](https://github.com/expressjs/multer)
-- **Authentication:** Custom Middleware (`auth.js`) & Firebase Admin SDK
-
-## 📂 Project Structure
-
-### `frontend/`
-The client-side application built with React.
-- **`src/pages/`**: Main route components (Home, Buy, Rent, NewLaunch, PropertyDetails, Admin Dashboard).
-- **`src/components/`**: Reusable UI components (Navbar, Hero, PropertyCard, FilterBar, SEO).
-- **`src/context/`**: Global state management (AuthContext, LanguageContext).
-- **`src/styles.css`**: Global styles and Tailwind directives.
-
-### `backend/`
-The server-side API application.
-- **`models/`**: Mongoose schemas (Property, Job, Agent, Lead, Log, Application).
-- **`middleware/`**: Custom middleware (Auth verification).
-- **`server.js`**: Main entry point, route definitions, and configuration.
-- **`uploads/`**: Directory for storing uploaded property images.
-- **`seed.js`**: Script to seed the database with initial property data.
+- **Runtime:** [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/)
+- **Database:** [MongoDB](https://www.mongodb.com/) (Atlas or Local) via Mongoose
+- **AI Integration:** Custom NLP-based Search Logic (Regex-based Mock AI)
+- **Security:** Helmet, CORS, Rate Limiting
+- **File Storage:** Local storage (Uploads)
 
 ## ✨ Key Features
 
-### 1. User Interface (Client)
-- **Dynamic Search:** Real-time property suggestions with images and location grouping.
-- **Advanced Filtering:** Filter by price, type, bedrooms, size, and location.
-- **Responsive Design:** Mobile-friendly layout with a modern glassmorphism aesthetic.
-- **SEO Optimized:** Dynamic meta tags for every page.
+### 1. 🤖 AI-Powered Search
+- **Natural Language Querying:** Users can search using phrases like *"3 bedroom condo in Mont Kiara under 2 million"* or *"Find me a rental near KLCC"*.
+- **Smart Parsing:** The system extracts location, price, property type, and bedroom requirements automatically.
 
-### 2. Admin Dashboard
-- **Property Management:** CRUD operations for properties.
-- **Job Management:** Post and manage career opportunities.
-- **Agent Management:** Manage real estate agent profiles.
-- **System Logs:** View system activities and user actions.
-- **Secure Login:** Admin-specific authentication flow.
+### 2. ⚖️ Property Comparison Engine
+- **Side-by-Side View:** Compare up to 4 properties simultaneously.
+- **Detailed Specs:** Compare price, built-up area, land area, tenure, and price per sqft.
+- **Interactive:** Easily add/remove properties from the comparison bar while browsing.
 
-### 3. API Endpoints
+### 3. 🧮 Financial Tools
+- **Mortgage Calculator:** Estimate monthly repayments based on loan amount, interest rate, and tenure.
+- **Affordability Calculator:** Determine maximum property budget based on income and commitments.
 
-#### Properties
-- `GET /api/properties` - Fetch all properties with filters.
-- `GET /api/properties/:id` - Fetch single property details.
-- `POST /api/properties` - Create new property (Admin).
-- `PUT /api/properties/:id` - Update property (Admin).
-- `DELETE /api/properties/:id` - Delete property (Admin).
+### 4. 🏢 Comprehensive Property Management
+- **Listings:** Dedicated Buy, Rent, and New Launch sections.
+- **Advanced Filtering:** Filter by precise location, price range, property type, and size.
+- **Media Support:** Galleries supporting both high-res images and video tours.
 
-#### Jobs & Agents
-- `GET /api/jobs` - Fetch active jobs.
-- `GET /api/agents` - Fetch all agents.
-- `POST /api/jobs` - Create job (Admin).
-- `PUT /api/jobs/:id` - Update job (Admin).
-- `DELETE /api/jobs/:id` - Delete job (Admin).
+### 5. 🛠️ Admin Dashboard
+- **Content Management:** Full CRUD for Properties, Jobs, and Agents.
+- **Lead Tracking:** View and manage inquiries from the "Contact Us" form.
+- **Analytics:** Visual charts for property distribution and price trends.
+- **System Logs:** Track admin activities for security and auditing.
 
-#### General
-- `POST /api/upload` - Upload images.
-- `POST /api/leases` - Submit new lead/inquiry.
-- `GET /api/logs` - Fetch system activity logs (Admin).
+## 📂 Project Structure
+
+### `frontend/src/`
+- **`components/`**: Reusable UI (Navbar, Hero, Footer, PropertyCard, ComparisonBar).
+- **`pages/`**:
+  - **Public:** `Home`, `Buy`, `Rent`, `NewLaunch`, `PropertyDetails`, `Compare`, `Calculators`.
+  - **Admin:** `Dashboard`, `Properties`, `Jobs`, `Agents`, `Leads`.
+- **`context/`**: `AuthContext`, `ComparisonContext`, `LanguageContext`.
+
+### `backend/`
+- **`controllers/`**: Logic for Properties, Jobs, Leads, AI Search.
+- **`models/`**: Mongoose Schemas (`Property`, `Job`, `Lead`, `Log`).
+- **`routes/`**: API Route definitions.
+- **`middleware/`**: Authentication and Security.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js (v16+)
-- MongoDB connection string
+- MongoDB Instance
 
 ### Installation
 
 1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/your-repo/property-ecomm.git
+    cd property-ecomm
+    ```
+
 2.  **Setup Backend**
     ```bash
     cd backend
     npm install
-    # Create .env file with PORT and MONGO_URI
-    node server.js
+    # Create .env file
+    # PORT=5000
+    # MONGO_URI=mongodb://localhost:27017/property_db
+    # JWT_SECRET=your_secret_key
+    
+    # Seed Database (Optional)
+    node seed.js
+    
+    # Run Server
+    npm run dev
     ```
+
 3.  **Setup Frontend**
     ```bash
     cd frontend
     npm install
-    # Create .env file with VITE_API_URL
+    # Create .env file
+    # VITE_API_URL=http://localhost:5000
+    
+    # Run Client
     npm run dev
     ```
 
-## 📝 Configuration
-Ensure you have the following environment variables set:
+## 🔒 Security Measures
+- **Rate Limiting:** Protects API from abuse.
+- **Helix:** Sets secure HTTP headers.
+- **Input Sanitization:** Prevents NoSQL injection (Custom logic replacing xss-clean).
 
-**Backend (`.env`)**
-```
-PORT=5000
-MONGO_URI=mongodb+srv://...
-```
-
-**Frontend (`.env`)**
-```
-VITE_API_URL=http://localhost:5000
-```
+## 📄 License
+This project is licensed under the MIT License.
