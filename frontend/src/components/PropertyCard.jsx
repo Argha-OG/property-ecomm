@@ -37,11 +37,11 @@ const PropertyCard = ({ property }) => {
     return (
         <div
             onClick={handleCardClick}
-            className="group glass-card overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 mx-auto"
+            className="group glass-card overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 w-full h-full min-h-[500px] flex flex-col"
             data-aos="fade-up"
         >
             {/* Image Container */}
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-56 overflow-hidden flex-shrink-0">
                 <img
                     src={property.images?.[0] || 'https://placehold.co/600x400?text=No+Image'}
                     alt={property.title}

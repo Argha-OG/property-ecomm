@@ -104,7 +104,7 @@ const NewLaunch = () => {
             </div>
 
             {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 items-stretch">
                     {[1, 2, 3].map((item) => (
                         <div key={item} className="h-96 bg-slate-100 rounded-3xl animate-pulse"></div>
                     ))}
@@ -122,7 +122,7 @@ const NewLaunch = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 items-stretch">
                             {paginatedProperties.map((property) => (
                                 <PropertyCard key={property._id} property={property} />
                             ))}
