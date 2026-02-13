@@ -81,15 +81,25 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure uploads directory exists
-const uploadDir = 'uploads';
+// Ensure uploads directory exists
+// Use /tmp on Vercel (Serverless) or 'uploads' locally
+const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
+const uploadDir = isVercel ? '/tmp' : 'uploads';
+
 if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
+    try {
+        fs.mkdirSync(uploadDir);
+    } catch (err) {
+        if (err.code !== 'EEXIST') {
+            console.error('Failed to create upload directory:', err);
+        }
+    }
 }
 
 // Configure Storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
@@ -98,8 +108,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Serve static uploads
-app.use('/uploads', express.static('uploads'));
+// Serve static uploads (Only works for persistent FS, not Vercel serverless)
+if (!isVercel) {
+    app.use('/uploads', express.static('uploads'));
+}
 
 // Upload Route
 const watermarkMiddleware = require('./middleware/watermark');
