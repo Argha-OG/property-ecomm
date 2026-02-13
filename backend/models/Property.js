@@ -8,9 +8,10 @@ const propertySchema = new mongoose.Schema({
     bedrooms: { type: Number, required: true },
     bathrooms: { type: Number, required: true },
     area: { type: String, required: true },
+    areaSize: { type: Number }, // Added for filtering
     images: [{ type: String }], // Up to 12 images
     videos: [{ type: String }], // Up to 3 videos
-    isNew: { type: Boolean, default: false },
+    isNewLaunch: { type: Boolean, default: false },
     category: { type: String, enum: ['Buy', 'Rent', 'New Launch'], required: true }, // Added category for filtering
     description: { type: String },
     amenities: [{ type: String }],

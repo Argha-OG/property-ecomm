@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Briefcase, MapPin, Clock, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const Careers = () => {
     const [jobs, setJobs] = useState([]);

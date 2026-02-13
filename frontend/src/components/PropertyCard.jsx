@@ -26,6 +26,7 @@ const PropertyCard = ({ property }) => {
         <div
             onClick={handleCardClick}
             className="group glass-card overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+            data-aos="fade-up"
         >
             {/* Image Container */}
             <div className="relative h-64 overflow-hidden">
@@ -38,7 +39,7 @@ const PropertyCard = ({ property }) => {
                     <div className="bg-primary/90 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md backdrop-blur-sm">
                         {property.type}
                     </div>
-                    {property.isNew && (
+                    {property.isNewLaunch && (
                         <div className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow-md backdrop-blur-sm">
                             New Launch
                         </div>

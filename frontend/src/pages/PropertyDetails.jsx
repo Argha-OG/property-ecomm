@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Layout as LayoutIcon, ArrowLeft, Share2, Heart, Phone, MessageCircle, FileText, CheckCircle, User, Calendar, Building, Shield, Car, X, ChevronLeft, ChevronRight, DollarSign } from 'lucide-react';
+import { MapPin, Bed, Bath, Layout as LayoutIcon, ArrowLeft, Share2, Heart, Phone, MessageCircle, FileText, CheckCircle, User, Calendar, Building, Shield, Car, X, ChevronLeft, ChevronRight, DollarSign, Play } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const PropertyDetails = () => {
+    // ... existing hooks ...
     const { id } = useParams();
     const [property, setProperty] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -10,6 +12,7 @@ const PropertyDetails = () => {
     const [activeLightboxIndex, setActiveLightboxIndex] = useState(0);
 
     useEffect(() => {
+        // ... existing fetch logic ...
         const fetchProperty = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/${id}`);
@@ -34,21 +37,32 @@ const PropertyDetails = () => {
 
     const nextImage = (e) => {
         e.stopPropagation();
-        setActiveLightboxIndex((prev) => (prev + 1) % images.length);
+        setActiveLightboxIndex((prev) => (prev + 1) % media.length);
     };
 
     const prevImage = (e) => {
         e.stopPropagation();
-        setActiveLightboxIndex((prev) => (prev - 1 + images.length) % images.length);
+        setActiveLightboxIndex((prev) => (prev - 1 + media.length) % media.length);
     };
 
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     if (!property) return <div className="min-h-screen flex items-center justify-center">Property not found</div>;
 
     const images = property.images && property.images.length > 0 ? property.images : ['https://placehold.co/1200x800?text=No+Image'];
+    const videos = property.videos || [];
+    const media = [...images, ...videos];
+
+    const isVideo = (url) => {
+        return url.includes('.mp4') || url.includes('youtube') || url.includes('vimeo');
+    };
 
     return (
         <div className="pb-20 pt-24 bg-slate-50 min-h-screen">
+            <SEO
+                title={`${property.title}`}
+                description={`Check out this ${property.type} for sale/rent in ${property.location}. Price: ${property.price}.`}
+                image={images[0]}
+            />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Breadcrumb & Title Header */}
@@ -92,27 +106,37 @@ const PropertyDetails = () => {
 
                 {/* Image Gallery */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-8 h-[400px] md:h-[500px] rounded-3xl overflow-hidden">
-                    {/* Main Image */}
-                    <div onClick={() => openLightbox(0)} className="md:col-span-2 md:row-span-2 relative group cursor-pointer h-full">
-                        <img src={images[0]} alt="Main" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    {/* Main Media (Image or Video) */}
+                    <div onClick={() => openLightbox(0)} className="md:col-span-2 md:row-span-2 relative group cursor-pointer h-full bg-black">
+                        {isVideo(media[0]) ? (
+                            <div className="flex items-center justify-center w-full h-full bg-slate-900">
+                                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
+                                    <Play size={32} fill="currentColor" />
+                                </div>
+                            </div>
+                        ) : (
+                            <img src={media[0]} alt="Main" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        )}
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                     </div>
-                    {/* Sub Images */}
+                    {/* Sub Media */}
                     <div className="hidden md:grid grid-cols-2 col-span-2 row-span-2 gap-2 h-full">
-                        {images.slice(1, 5).map((img, idx) => (
-                            <div key={idx} onClick={() => openLightbox(idx + 1)} className="relative group cursor-pointer overflow-hidden h-full">
-                                <img src={img} alt={`Sub ${idx}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                                {idx === 3 && images.length > 5 && (
+                        {media.slice(1, 5).map((item, idx) => (
+                            <div key={idx} onClick={() => openLightbox(idx + 1)} className="relative group cursor-pointer overflow-hidden h-full bg-slate-100">
+                                {isVideo(item) ? (
+                                    <div className="flex items-center justify-center w-full h-full bg-slate-800">
+                                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
+                                            <Play size={24} fill="currentColor" />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <img src={item} alt={`Sub ${idx}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                )}
+                                {idx === 3 && media.length > 5 && (
                                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold text-lg">
-                                        +{images.length - 5} More
+                                        +{media.length - 5} More
                                     </div>
                                 )}
-                            </div>
-                        ))}
-                        {/* Fillers if not enough images */}
-                        {images.length < 5 && Array(5 - images.length).fill(0).map((_, idx) => (
-                            <div key={`placeholder-${idx}`} className="bg-slate-200 h-full flex items-center justify-center text-slate-400">
-                                <span className="text-xs">No Image</span>
                             </div>
                         ))}
                     </div>
@@ -127,17 +151,29 @@ const PropertyDetails = () => {
                         <button className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 p-4" onClick={prevImage}>
                             <ChevronLeft size={40} />
                         </button>
-                        <img
-                            src={images[activeLightboxIndex]}
-                            alt="Full screen"
-                            className="max-w-full max-h-[90vh] object-contain select-none"
-                            onClick={(e) => e.stopPropagation()}
-                        />
+
+                        <div className="max-w-full max-h-[90vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                            {isVideo(media[activeLightboxIndex]) ? (
+                                <video
+                                    src={media[activeLightboxIndex]}
+                                    controls
+                                    autoPlay
+                                    className="max-w-full max-h-[90vh]"
+                                />
+                            ) : (
+                                <img
+                                    src={media[activeLightboxIndex]}
+                                    alt="Full screen"
+                                    className="max-w-full max-h-[90vh] object-contain select-none"
+                                />
+                            )}
+                        </div>
+
                         <button className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 p-4" onClick={nextImage}>
                             <ChevronRight size={40} />
                         </button>
                         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white font-medium bg-black/50 px-4 py-1 rounded-full">
-                            {activeLightboxIndex + 1} / {images.length}
+                            {activeLightboxIndex + 1} / {media.length}
                         </div>
                     </div>
                 )}

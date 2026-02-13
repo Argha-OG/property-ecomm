@@ -3,6 +3,7 @@ import { Lock, Mail, User, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -10,18 +11,21 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { googleLogin } = useAuth();
+    const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         setLoading(true);
-        // Mock Registration for now
-        setTimeout(() => {
-            toast.success('Registration successful! Please login.');
+        try {
+            await register(name, email, password);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            toast.error('Registration failed');
+        } finally {
             setLoading(false);
-            navigate('/login');
-        }, 1000);
+        }
     };
 
     const handleGoogleLogin = async () => {
@@ -35,6 +39,7 @@ const Register = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
+            <SEO title="Register" />
             <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
                 <div className="text-center">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">

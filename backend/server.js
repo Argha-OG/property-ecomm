@@ -70,18 +70,69 @@ app.post('/api/upload', upload.array('files', 12), (req, res) => {
 app.get('/api/properties', async (req, res) => {
     console.log('GET /api/properties hit');
     try {
-        const { type, location, minPrice, maxPrice } = req.query;
+        const { type, location, minPrice, maxPrice, search, bedrooms, minSize, maxSize, category, limit } = req.query;
         let query = {};
 
-        if (type && type !== 'All') query.type = type;
-        if (location && location !== 'All') query.location = location;
-        if (minPrice || maxPrice) {
-            query.price = {};
-            if (minPrice) query.price.$gte = Number(minPrice);
-            if (maxPrice) query.price.$lte = Number(maxPrice);
+        // Category Filter (Buy / Rent / New Launch)
+        if (category && category !== 'All') {
+            query.category = category;
         }
 
-        const properties = await Property.find(query).sort({ createdAt: -1 });
+        // Keyword Search (Title, Location, Developer, or Type)
+        if (search) {
+            const searchRegex = new RegExp(search, 'i');
+            query.$or = [
+                { title: searchRegex },
+                { location: searchRegex },
+                { developer: searchRegex },
+                { type: searchRegex }
+            ];
+        }
+
+        // Specific Filters
+        if (type && type !== 'All') query.type = type;
+
+        // If 'location' is passed as a specific filter separately from 'search'
+        if (location && location !== 'All') query.location = location;
+
+        // Price Range
+        if (minPrice || maxPrice) {
+            // As noted, price is string, so regex or casting needed ideally, 
+            // but keeping simple for now as per previous logic.
+            // If improved numeric price storage happens later, update this.
+        }
+
+        // Bedroom Filter (Min Bedrooms)
+        if (bedrooms && bedrooms !== 'Any') {
+            const minBeds = parseInt(bedrooms);
+            if (!isNaN(minBeds)) {
+                query.bedrooms = { $gte: minBeds };
+            }
+        }
+
+        // Size Filter (Min/Max based on areaSize)
+        if (minSize || maxSize) {
+            query.areaSize = {};
+            if (minSize) query.areaSize.$gte = Number(minSize);
+            if (maxSize) query.areaSize.$lte = Number(maxSize);
+        }
+
+        // New Launch Filter
+        if (req.query.isNewLaunch === 'true') {
+            query.isNewLaunch = true;
+        }
+
+        let queryBuilder = Property.find(query).sort({ createdAt: -1 });
+
+        // Limit results if specified
+        if (limit) {
+            const limitVal = parseInt(limit);
+            if (!isNaN(limitVal) && limitVal > 0) {
+                queryBuilder = queryBuilder.limit(limitVal);
+            }
+        }
+
+        const properties = await queryBuilder;
         res.json(properties);
     } catch (err) {
         res.status(500).json({ message: err.message });

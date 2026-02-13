@@ -12,7 +12,40 @@
     }
 }
 
+/* Base Styles & Scrollbar Reset */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Do not set overflow-y: scroll here if body handles content, but default is fine */
+}
+
 body {
     @apply bg-slate-50 text-slate-900;
     font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+/* Hide Webkit Scrollbar */
+::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: transparent;
 }

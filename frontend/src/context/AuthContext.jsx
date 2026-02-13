@@ -106,10 +106,45 @@ export const AuthProvider = ({ children }) => {
                     }
 
                     resolve(userData);
+                } else if (email === 'user@demo.com' && password === 'user123') {
+                    const userData = { name: 'Demo User', email: 'user@demo.com', role: 'User' };
+                    setUser(userData);
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    toast.success('Welcome back!');
+                    resolve(userData);
                 } else {
                     toast.error('Invalid email or password');
                     reject(new Error('Invalid email or password'));
                 }
+            }, 1000);
+        });
+    };
+
+    const register = async (name, email, password) => {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                const userData = { name, email, role: 'User', uid: 'new-user-' + Date.now() };
+                setUser(userData);
+                localStorage.setItem('user', JSON.stringify(userData));
+
+                // Log Registration Event
+                try {
+                    await fetch(`${import.meta.env.VITE_API_URL}/api/logs`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'REGISTER',
+                            performer: email,
+                            role: 'User',
+                            details: `New user registered: ${name}`
+                        })
+                    });
+                } catch (e) {
+                    console.error("Logging failed", e);
+                }
+
+                toast.success(`Welcome to Demo JK, ${name}!`);
+                resolve(userData);
             }, 1000);
         });
     };
@@ -142,7 +177,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, googleLogin, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, register, googleLogin, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );

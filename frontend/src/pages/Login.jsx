@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-hot-toast';
+import { Mail, Lock, Loader, ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -13,7 +15,7 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const from = location.state?.from?.pathname || '/admin/dashboard';
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,26 +27,27 @@ const Login = () => {
             navigate(from, { replace: true });
         } catch (err) {
             setError(err.message || 'Failed to login');
+            toast.error(err.message || 'Failed to login');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
-            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+            <SEO title="Login" />
+            <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
                 <div className="text-center">
                     <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
                         <Lock size={32} />
                     </div>
-                    <h2 className="text-3xl font-extrabold text-slate-900">Admin Login</h2>
+                    <h2 className="text-3xl font-extrabold text-slate-900">Welcome Back</h2>
                     <p className="mt-2 text-sm text-slate-600">
-                        Sign in to manage properties and leads.
+                        Sign in to access your saved properties and inquiries.
                     </p>
                 </div>
 
                 <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-                    {/* ... (existing fields) */}
                     <div className="space-y-4">
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -76,7 +79,7 @@ const Login = () => {
                             disabled={loading}
                             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-lg shadow-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? 'Signing in...' : 'Sign in'}
+                            {loading ? <Loader className="animate-spin" size={20} /> : 'Sign in'}
                             {!loading && <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />}
                         </button>
 
@@ -101,7 +104,7 @@ const Login = () => {
                         Forgot your password?
                     </a>
                     <p className="text-sm text-slate-600">
-                        Don't have an account? <a href="/register" className="text-primary font-bold hover:underline">Register</a>
+                        Don't have an account? <Link to="/register" className="text-primary font-bold hover:underline">Register</Link>
                     </p>
                 </div>
             </div>

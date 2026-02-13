@@ -1,7 +1,13 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { HelmetProvider } from 'react-helmet-async';
+import { Toaster } from 'react-hot-toast';
 import { LanguageProvider } from './context/LanguageContext';
+import ScrollToTop from './components/ScrollToTop';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
+
 import AuthGuard from './components/AuthGuard';
 import PublicLayout from './layouts/PublicLayout';
 import Home from './pages/Home';
@@ -21,59 +27,72 @@ import AdminLeads from './pages/admin/Leads';
 import AdminAgents from './pages/admin/Agents';
 import AdminJobs from './pages/admin/Jobs';
 import AdminLogs from './pages/admin/Logs';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminManagement from './pages/admin/AdminManagement';
 
-import ErrorBoundary from './components/ErrorBoundary';
+// Initialize AOS once
+AOS.init({
+  once: true,
+});
 
-import { Toaster } from 'react-hot-toast';
+// Wrapper component to handle route-based effects
+const AppContent = () => {
+  const location = useLocation();
 
-import ScrollToTop from './components/ScrollToTop';
+  useEffect(() => {
+    AOS.refresh();
+  }, [location]);
 
-function App() {
   return (
-    <ErrorBoundary>
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Public Routes */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/buy" element={<Buy />} />
+          <Route path="/rent" element={<Rent />} />
+          <Route path="/new-launch" element={<NewLaunch />} />
+          <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} /> {/* Added back Register */}
+          <Route path="/careers" element={<Careers />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<AuthGuard><AdminLayout /></AuthGuard>}>
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/properties" element={<AdminProperties />} />
+          <Route path="/admin/leads" element={<AdminLeads />} /> {/* Using original AdminLeads */}
+          <Route path="/admin/admins" element={<AdminManagement />} />
+          <Route path="/admin/logs" element={<AdminLogs />} /> {/* Using original AdminLogs */}
+          <Route path="/admin/jobs" element={<AdminJobs />} /> {/* Using original AdminJobs */}
+          <Route path="/admin/agents" element={<AdminAgents />} /> {/* Using original AdminAgents */}
+        </Route>
+
+        {/* Catch all */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <HelmetProvider>
       <LanguageProvider>
         <AuthProvider>
           <Router>
-            <ScrollToTop />
+            <AppContent />
             <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-            <Routes>
-              {/* Public Routes */}
-              <Route element={<PublicLayout><Outlet /></PublicLayout>}>
-                <Route path="/" element={<Home />} />
-                <Route path="/buy" element={<Buy />} />
-                <Route path="/rent" element={<Rent />} />
-                <Route path="/new-launch" element={<NewLaunch />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/property/:id" element={<PropertyDetails />} />
-              </Route>
-
-              {/* Admin Routes */}
-              <Route path="/admin" element={
-                <AuthGuard>
-                  <AdminLayout />
-                </AuthGuard>
-              }>
-                <Route index element={<React.Fragment><Dashboard /></React.Fragment>} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="properties" element={<AdminProperties />} />
-                <Route path="leads" element={<AdminLeads />} />
-                <Route path="agents" element={<AdminAgents />} />
-                <Route path="jobs" element={<AdminJobs />} />
-                <Route path="logs" element={<AdminLogs />} />
-              </Route>
-
-              {/* Fallback */}
-              <Route path="*" element={<div className="h-[50vh] flex items-center justify-center text-slate-500">Page not found</div>} />
-            </Routes>
           </Router>
         </AuthProvider>
       </LanguageProvider>
-    </ErrorBoundary>
+    </HelmetProvider>
   );
-}
+};
 
 export default App;

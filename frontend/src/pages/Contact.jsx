@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, CheckCircle, Send } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Contact = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });

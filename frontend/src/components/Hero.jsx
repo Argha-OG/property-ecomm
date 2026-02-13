@@ -13,6 +13,11 @@ const Hero = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
 
+    // Advanced Filters State
+    const [showAdvanced, setShowAdvanced] = useState(false);
+    const [bedrooms, setBedrooms] = useState('Any');
+    const [sizeRange, setSizeRange] = useState({ min: 0, max: 0, label: 'Any Size' });
+
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [priceRange, setPriceRange] = useState({ min: 0, max: 0, label: t.hero.filters.any });
 
@@ -43,22 +48,52 @@ const Hero = () => {
         setActiveDropdown(activeDropdown === name ? null : name);
     };
 
-    const handleSearchChange = (e) => {
+    const handleSearchChange = async (e) => {
         const query = e.target.value;
         setSearchQuery(query);
-        if (query.length > 0) {
-            const filtered = allSuggestions.filter(item =>
-                item.toLowerCase().includes(query.toLowerCase())
-            );
-            setSuggestions(filtered);
-            setShowSuggestions(true);
+
+        if (query.length > 1) {
+            try {
+                // Fetch suggestions from API
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?search=${query}`);
+                const data = await response.json();
+
+                // Process Property Suggestions
+                const propertySuggestions = data.map(p => ({
+                    type: 'Property',
+                    text: p.title,
+                    image: p.images?.[0] || 'https://placehold.co/100x100?text=No+Image',
+                    price: p.price
+                }));
+
+                // Process Location Suggestions (Unique)
+                const existingLocations = new Set();
+                const locationSuggestions = [];
+                data.forEach(p => {
+                    if (!existingLocations.has(p.location)) {
+                        existingLocations.add(p.location);
+                        locationSuggestions.push({
+                            type: 'Location',
+                            text: p.location,
+                            image: null
+                        });
+                    }
+                });
+
+                // Combine and limit
+                const combined = [...propertySuggestions, ...locationSuggestions].slice(0, 6);
+                setSuggestions(combined);
+                setShowSuggestions(true);
+            } catch (error) {
+                console.error("Error fetching suggestions:", error);
+            }
         } else {
             setShowSuggestions(false);
         }
     };
 
     const handleSuggestionClick = (suggestion) => {
-        setSearchQuery(suggestion);
+        setSearchQuery(suggestion.text);
         setShowSuggestions(false);
     };
 
@@ -92,7 +127,7 @@ const Hero = () => {
             </div>
 
             {/* Content Container */}
-            <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 md:pt-20">
+            <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 md:pt-24">
                 <div className="text-center mb-10 animate-fade-in-up">
                     <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight mb-6 animate-slide-up text-white drop-shadow-md">
                         {t.hero.title} <br />
@@ -140,15 +175,36 @@ const Hero = () => {
                         </div>
                         {/* Suggestions Dropdown */}
                         {showSuggestions && suggestions.length > 0 && (
-                            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-xl mt-2 p-2 z-20 max-h-60 overflow-y-auto animate-fade-in border border-slate-100">
+                            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-xl mt-2 p-2 z-20 max-h-80 overflow-y-auto animate-fade-in border border-slate-100">
                                 {suggestions.map((item, index) => (
                                     <button
                                         key={index}
                                         onClick={() => handleSuggestionClick(item)}
-                                        className="w-full text-left px-3 py-2 hover:bg-slate-50 rounded-lg text-sm text-slate-700 flex items-center justify-between group"
+                                        className="w-full text-left px-3 py-3 hover:bg-slate-50 rounded-lg flex items-center gap-3 transition-colors group border-b border-slate-50 last:border-0"
                                     >
-                                        <span>{item}</span>
-                                        <Check size={14} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        {/* Thumbnail or Icon */}
+                                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-slate-100 flex items-center justify-center border border-slate-200">
+                                            {item.image ? (
+                                                <img src={item.image} alt={item.text} className="w-full h-full object-cover" />
+                                            ) : (
+                                                <MapPin size={20} className="text-slate-400" />
+                                            )}
+                                        </div>
+
+                                        {/* Text Info */}
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-semibold text-slate-800 truncate group-hover:text-primary transition-colors">{item.text}</p>
+                                            <div className="flex items-center gap-2 text-xs text-slate-500">
+                                                <span className={`px-1.5 py-0.5 rounded text-[10px] uppercase font-bold ${item.type === 'Property' ? 'bg-blue-50 text-blue-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                                                    {item.type}
+                                                </span>
+                                                {item.price && <span>{item.price}</span>}
+                                            </div>
+                                        </div>
+
+                                        <div className="-rotate-90 text-slate-300">
+                                            <ChevronDown size={16} />
+                                        </div>
                                     </button>
                                 ))}
                             </div>
@@ -302,11 +358,60 @@ const Hero = () => {
                             <button onClick={() => { setSearchQuery('KLCC'); handleSearch(); }} className="hover:text-primary underline decoration-dotted">KLCC</button>
                             <button onClick={() => { setSearchQuery('Bangsar'); handleSearch(); }} className="hover:text-primary underline decoration-dotted">Bangsar</button>
                         </div>
-                        <button className="flex items-center gap-1 hover:text-primary transition-colors">
+                        <button
+                            onClick={() => setShowAdvanced(!showAdvanced)}
+                            className={`flex items-center gap-1 hover:text-primary transition-colors ${showAdvanced ? 'text-primary' : ''}`}
+                        >
                             <Filter size={14} />
-                            <span>{t.hero.filters.advanced}</span>
+                            <span>{showAdvanced ? 'Hide Options' : t.hero.filters.advanced}</span>
                         </button>
                     </div>
+
+                    {/* Advanced Filters Row (Collapsible) */}
+                    {showAdvanced && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 animate-fade-in-down">
+                            {/* Bedrooms */}
+                            <div className="relative">
+                                <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Bedrooms</label>
+                                <div className="flex gap-2">
+                                    {['Any', '1+', '2+', '3+', '4+'].map((opt) => (
+                                        <button
+                                            key={opt}
+                                            onClick={() => setBedrooms(opt === bedrooms ? 'Any' : opt)}
+                                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${bedrooms === opt
+                                                ? 'bg-primary text-white border-primary'
+                                                : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-primary'
+                                                }`}
+                                        >
+                                            {opt}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Size Range */}
+                            <div className="relative">
+                                <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Property Size (sqft)</label>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="number"
+                                        placeholder="Min"
+                                        value={sizeRange.min === 0 ? '' : sizeRange.min}
+                                        onChange={(e) => setSizeRange({ ...sizeRange, min: Number(e.target.value) })}
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                                    />
+                                    <span className="text-slate-400 font-medium">-</span>
+                                    <input
+                                        type="number"
+                                        placeholder="Max"
+                                        value={sizeRange.max === 0 ? '' : sizeRange.max}
+                                        onChange={(e) => setSizeRange({ ...sizeRange, max: Number(e.target.value) })}
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             </div>
