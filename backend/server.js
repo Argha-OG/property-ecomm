@@ -61,7 +61,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Middleware
-const allowedOrigins = ['http://localhost:5173', 'https://demo-jk.vercel.app', 'https://property-ecomm.vercel.app'];
+const allowedOrigins = ['http://localhost:5173', 'https://demo-jk.vercel.app', 'https://property-ecomm.vercel.app', 'http://localhost:4173'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
