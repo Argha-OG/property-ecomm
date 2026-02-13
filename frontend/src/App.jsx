@@ -29,65 +29,14 @@ import AdminJobs from './pages/admin/Jobs';
 import AdminLogs from './pages/admin/Logs';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminManagement from './pages/admin/AdminManagement';
+import { ComparisonProvider } from './context/ComparisonContext';
+import Compare from './pages/Compare';
+import Calculators from './pages/Calculators';
 
-// New imports based on the provided code edit
-import { ComparisonProvider } from './context/ComparisonContext'; // Assuming this path
-import ComparisonBar from './components/ComparisonBar'; // Assuming this path
-import Navbar from './components/Navbar'; // Assuming this path
-import Footer from './components/Footer'; // Assuming this path
-import Compare from './pages/Compare'; // Assuming this path
-import Calculators from './pages/Calculators'; // Assuming this path
-
-
-// Initialize AOS once
+// Initialized AOS outside component to prevent re-init
 AOS.init({
   once: true,
 });
-
-// Wrapper component to handle route-based effects
-const AppContent = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    AOS.refresh();
-  }, [location]);
-
-  return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        {/* Public Routes */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/buy" element={<Buy />} />
-          <Route path="/rent" element={<Rent />} />
-          <Route path="/new-launch" element={<NewLaunch />} />
-          <Route path="/property/:id" element={<PropertyDetails />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} /> {/* Added back Register */}
-          <Route path="/careers" element={<Careers />} />
-        </Route>
-
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route element={<AuthGuard><AdminLayout /></AuthGuard>}>
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/properties" element={<AdminProperties />} />
-          <Route path="/admin/leads" element={<AdminLeads />} /> {/* Using original AdminLeads */}
-          <Route path="/admin/admins" element={<AdminManagement />} />
-          <Route path="/admin/logs" element={<AdminLogs />} /> {/* Using original AdminLogs */}
-          <Route path="/admin/jobs" element={<AdminJobs />} /> {/* Using original AdminJobs */}
-          <Route path="/admin/agents" element={<AdminAgents />} /> {/* Using original AdminAgents */}
-        </Route>
-
-        {/* Catch all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
-  );
-};
 
 const App = () => {
   return (
@@ -97,72 +46,39 @@ const App = () => {
           <LanguageProvider>
             <Router>
               <ScrollToTop />
-              <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <main className="flex-grow">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/buy" element={<Buy />} />
-                    <Route path="/rent" element={<Rent />} />
-                    <Route path="/compare" element={<Compare />} />
-                    <Route path="/property/:id" element={<PropertyDetails />} />
-                    <Route path="/new-launch" element={<NewLaunch />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/calculators" element={<Calculators />} />
+              <Routes>
+                {/* Public Routes */}
+                <Route element={<PublicLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/buy" element={<Buy />} />
+                  <Route path="/rent" element={<Rent />} />
+                  <Route path="/compare" element={<Compare />} />
+                  <Route path="/property/:id" element={<PropertyDetails />} />
+                  <Route path="/new-launch" element={<NewLaunch />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/calculators" element={<Calculators />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/careers" element={<Careers />} />
+                </Route>
 
-                    {/* Admin Routes */}
-                    <Route path="/admin/login" element={<AdminLogin />} />
-                    <Route
-                      path="/admin/dashboard"
-                      element={
-                        <AuthGuard>
-                          <Dashboard />
-                        </AuthGuard>
-                      }
-                    />
-                    <Route
-                      path="/admin/properties"
-                      element={
-                        <AuthGuard>
-                          <AdminProperties />
-                        </AuthGuard>
-                      }
-                    />
-                    <Route
-                      path="/admin/jobs"
-                      element={
-                        <AuthGuard>
-                          <AdminJobs />
-                        </AuthGuard>
-                      }
-                    />
-                    <Route
-                      path="/admin/leads"
-                      element={
-                        <AuthGuard>
-                          <AdminLeads />
-                        </AuthGuard>
-                      }
-                    />
-                    {/* The provided snippet removed other admin routes and public routes like /register, /careers, and the PublicLayout/AdminLayout structure.
-                        To make the file syntactically correct and apply the provided snippet faithfully,
-                        I'm replacing the original AppContent usage with the new structure.
-                        This means the original PublicLayout/AdminLayout structure and some routes are removed as per the snippet.
-                        If the intention was to *only* add ComparisonProvider/Bar without these other changes, the provided snippet was misleading.
-                        I'm prioritizing the provided snippet's content for the App component's return.
-                    */}
-                    <Route path="/admin/admins" element={<AuthGuard><AdminManagement /></AuthGuard>} />
-                    <Route path="/admin/agents" element={<AuthGuard><AdminAgents /></AuthGuard>} />
-                    <Route path="/admin/logs" element={<AuthGuard><AdminLogs /></AuthGuard>} />
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
 
-                    {/* Catch all - assuming it should still exist */}
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </main>
-                <Footer />
-                <ComparisonBar />
-              </div>
+                <Route element={<AuthGuard><AdminLayout /></AuthGuard>}>
+                  <Route path="/admin/dashboard" element={<Dashboard />} />
+                  <Route path="/admin/properties" element={<AdminProperties />} />
+                  <Route path="/admin/leads" element={<AdminLeads />} />
+                  <Route path="/admin/admins" element={<AdminManagement />} />
+                  <Route path="/admin/logs" element={<AdminLogs />} />
+                  <Route path="/admin/jobs" element={<AdminJobs />} />
+                  <Route path="/admin/agents" element={<AdminAgents />} />
+                </Route>
+
+                {/* Catch all */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
               <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
             </Router>
           </LanguageProvider>
