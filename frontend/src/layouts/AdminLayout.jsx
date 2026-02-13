@@ -1,31 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Building2, Users, UserCheck, Briefcase, Activity, Bell, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, Building2, Users, UserCheck, Briefcase, Activity, Bell, LogOut, Settings, X } from 'lucide-react';
 
 import { useAuth } from '../context/AuthContext';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
-    const location = useLocation(); // Added useLocation to determine active state
+    const location = useLocation();
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    const handleLogout = () => {
-        if (window.confirm('Are you sure you want to logout?')) {
-            logout();
-            navigate('/login');
-        }
+    const handleLogoutClick = () => {
+        setShowLogoutModal(true);
     };
 
-    // The original navItems array is being replaced by direct rendering in the Code Edit.
-    // I will update the navItems array to reflect the new links and icons,
-    // and keep the existing NavLink rendering logic.
+    const confirmLogout = () => {
+        logout();
+        setShowLogoutModal(false);
+        navigate('/login');
+    };
+
     const navItems = [
         { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-        { path: '/admin/properties', icon: Building2, label: 'Properties' }, // Changed Building to Building2
-        { path: '/admin/leads', icon: Users, label: 'Leads' }, // Changed label from 'Client Leads' to 'Leads'
-        { path: '/admin/agents', icon: UserCheck, label: 'Agents' }, // New item
-        { path: '/admin/jobs', icon: Briefcase, label: 'Job Posts' }, // New item
-        { path: '/admin/logs', icon: Activity, label: 'System Logs' }, // Changed icon from FileText to Activity, label from 'Site Logs' to 'System Logs'
+        { path: '/admin/properties', icon: Building2, label: 'Properties' },
+        { path: '/admin/leads', icon: Users, label: 'Leads' },
+        { path: '/admin/agents', icon: UserCheck, label: 'Agents' },
+        { path: '/admin/jobs', icon: Briefcase, label: 'Job Posts' },
+        { path: '/admin/logs', icon: Activity, label: 'System Logs' },
     ];
 
     return (
@@ -58,7 +59,7 @@ const AdminLayout = () => {
 
                 <div className="p-4 border-t border-slate-100">
                     <button
-                        onClick={handleLogout}
+                        onClick={handleLogoutClick}
                         className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl w-full transition-colors"
                     >
                         <LogOut size={20} />
@@ -92,6 +93,36 @@ const AdminLayout = () => {
                     <Outlet />
                 </div>
             </main>
+
+            {/* Logout Confirmation Modal */}
+            {showLogoutModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden transform transition-all scale-100 opacity-100">
+                        <div className="p-6 text-center">
+                            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                                <LogOut size={32} />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-800 mb-2">Confirm Logout</h3>
+                            <p className="text-slate-500 mb-6">Are you sure you want to end your session?</p>
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setShowLogoutModal(false)}
+                                    className="flex-1 px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmLogout}
+                                    className="flex-1 px-4 py-2 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

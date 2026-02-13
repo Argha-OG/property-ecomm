@@ -19,7 +19,7 @@ const AdminProperties = () => {
             setProperties(data);
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching properties:', error);
+
             toast.error('Failed to load properties');
             setLoading(false);
         }
@@ -44,7 +44,7 @@ const AdminProperties = () => {
                     toast.error('Failed to delete property');
                 }
             } catch (err) {
-                console.error(err);
+
                 toast.error('Error deleting property');
             }
         }
@@ -82,7 +82,7 @@ const AdminProperties = () => {
                 alert('Operation failed. (Backend might not have this endpoint enabled yet)');
             }
         } catch (error) {
-            console.error('Error saving property:', error);
+
             alert('Error saving property');
         }
     };

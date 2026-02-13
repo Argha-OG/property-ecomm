@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { LanguageProvider } from './context/LanguageContext';
 import AuthGuard from './components/AuthGuard';
 import PublicLayout from './layouts/PublicLayout';
 import Home from './pages/Home';
@@ -25,47 +26,52 @@ import ErrorBoundary from './components/ErrorBoundary';
 
 import { Toaster } from 'react-hot-toast';
 
+import ScrollToTop from './components/ScrollToTop';
+
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Router>
-          <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-          <Routes>
-            {/* Public Routes */}
-            <Route element={<PublicLayout><Outlet /></PublicLayout>}>
-              <Route path="/" element={<Home />} />
-              <Route path="/buy" element={<Buy />} />
-              <Route path="/rent" element={<Rent />} />
-              <Route path="/new-launch" element={<NewLaunch />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/property/:id" element={<PropertyDetails />} />
-            </Route>
+      <LanguageProvider>
+        <AuthProvider>
+          <Router>
+            <ScrollToTop />
+            <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+            <Routes>
+              {/* Public Routes */}
+              <Route element={<PublicLayout><Outlet /></PublicLayout>}>
+                <Route path="/" element={<Home />} />
+                <Route path="/buy" element={<Buy />} />
+                <Route path="/rent" element={<Rent />} />
+                <Route path="/new-launch" element={<NewLaunch />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/property/:id" element={<PropertyDetails />} />
+              </Route>
 
-            {/* Admin Routes */}
-            <Route path="/admin" element={
-              <AuthGuard>
-                <AdminLayout />
-              </AuthGuard>
-            }>
-              <Route index element={<React.Fragment><Dashboard /></React.Fragment>} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="properties" element={<AdminProperties />} />
-              <Route path="leads" element={<AdminLeads />} />
-              <Route path="agents" element={<AdminAgents />} />
-              <Route path="jobs" element={<AdminJobs />} />
-              <Route path="logs" element={<AdminLogs />} />
-            </Route>
+              {/* Admin Routes */}
+              <Route path="/admin" element={
+                <AuthGuard>
+                  <AdminLayout />
+                </AuthGuard>
+              }>
+                <Route index element={<React.Fragment><Dashboard /></React.Fragment>} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="properties" element={<AdminProperties />} />
+                <Route path="leads" element={<AdminLeads />} />
+                <Route path="agents" element={<AdminAgents />} />
+                <Route path="jobs" element={<AdminJobs />} />
+                <Route path="logs" element={<AdminLogs />} />
+              </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<div className="h-[50vh] flex items-center justify-center text-slate-500">Page not found</div>} />
-          </Routes>
-        </Router>
-      </AuthProvider>
+              {/* Fallback */}
+              <Route path="*" element={<div className="h-[50vh] flex items-center justify-center text-slate-500">Page not found</div>} />
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </LanguageProvider>
     </ErrorBoundary>
   );
 }

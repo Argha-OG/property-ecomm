@@ -13,7 +13,27 @@ const propertySchema = new mongoose.Schema({
     isNew: { type: Boolean, default: false },
     category: { type: String, enum: ['Buy', 'Rent', 'New Launch'], required: true }, // Added category for filtering
     description: { type: String },
-    amenities: [{ type: String }]
+    amenities: [{ type: String }],
+    // New Fields for Enhanced Property Details
+    furnishing: { type: String, enum: ['Fully Furnished', 'Partially Furnished', 'Unfurnished'], default: 'Unfurnished' },
+    tenure: { type: String, enum: ['Freehold', 'Leasehold'], default: 'Freehold' },
+    completionYear: { type: String },
+    developer: { type: String },
+    totalUnits: { type: String },
+    facilities: [{ type: String }],
+
+    // Agent Details embedded (or could be ref but keeping simple for now)
+    agentName: { type: String },
+    agentContact: { type: String },
+    agentImage: { type: String },
+    agentRen: { type: String }, // License number
+
+    // Map
+    mapLocation: {
+        lat: { type: Number },
+        lng: { type: Number },
+        address: { type: String } // Full address for display
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Property', propertySchema);

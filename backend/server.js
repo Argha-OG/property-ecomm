@@ -10,6 +10,14 @@ const Application = require('./models/Application');
 const Log = require('./models/Log');
 const verifyToken = require('./middleware/auth');
 
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.error('MongoDB Connection Error:', err));
+
 // Helper for Backend Logging
 const logActivity = async (action, performer, role, details) => {
     try {
@@ -23,7 +31,72 @@ const logActivity = async (action, performer, role, details) => {
 app.use(cors());
 app.use(express.json());
 // Serve static uploads
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Ensure uploads directory exists
+const uploadDir = 'uploads';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Configure Storage
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Serve static uploads
 app.use('/uploads', express.static('uploads'));
+
+// Upload Route
+app.post('/api/upload', upload.array('files', 12), (req, res) => {
+    try {
+        const filePaths = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
+        res.json({ urls: filePaths });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// --- Property Routes ---
+app.get('/api/properties', async (req, res) => {
+    console.log('GET /api/properties hit');
+    try {
+        const { type, location, minPrice, maxPrice } = req.query;
+        let query = {};
+
+        if (type && type !== 'All') query.type = type;
+        if (location && location !== 'All') query.location = location;
+        if (minPrice || maxPrice) {
+            query.price = {};
+            if (minPrice) query.price.$gte = Number(minPrice);
+            if (maxPrice) query.price.$lte = Number(maxPrice);
+        }
+
+        const properties = await Property.find(query).sort({ createdAt: -1 });
+        res.json(properties);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.get('/api/properties/:id', async (req, res) => {
+    try {
+        const property = await Property.findById(req.params.id);
+        if (!property) return res.status(404).json({ message: 'Property not found' });
+        res.json(property);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 
 // --- Log Routes ---
 app.get('/api/logs', async (req, res) => {
@@ -49,6 +122,15 @@ app.post('/api/logs', async (req, res) => {
 app.get('/api/jobs', async (req, res) => {
     try {
         const jobs = await Job.find({ status: 'Active' }).sort({ createdAt: -1 });
+        res.json(jobs);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.get('/api/admin/jobs', async (req, res) => {
+    try {
+        const jobs = await Job.find().sort({ createdAt: -1 });
         res.json(jobs);
     } catch (err) {
         res.status(500).json({ message: err.message });

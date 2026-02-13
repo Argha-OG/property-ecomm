@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
                 // Special check for Admin (hardcoded for now based on email, or check DB)
                 if (currentUser.email === 'admin@demojk.com') {
-                    userData.role = 'Start'; // Or 'admin'
+                    userData.role = 'admin';
                 }
 
                 setUser(userData);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
                     })
                 });
             } catch (e) {
-                console.error("Logging failed", e);
+
             }
 
             toast.success(`Welcome, ${user.displayName}!`);
@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
                             })
                         });
                     } catch (e) {
-                        console.error("Logging failed", e);
+
                     }
 
                     resolve(userData);
