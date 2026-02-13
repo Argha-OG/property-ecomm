@@ -18,6 +18,20 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB Connection Error:', err));
 
+// Health Check Endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date(), env: process.env.NODE_ENV });
+});
+
+// Global Error Handlers for Debugging
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('UNHANDLED REJECTION:', reason);
+});
+
 // Helper for Backend Logging
 const logActivity = async (action, performer, role, details) => {
     try {
