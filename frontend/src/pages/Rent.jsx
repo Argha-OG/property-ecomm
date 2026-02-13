@@ -14,8 +14,11 @@ const Rent = () => {
         minPrice: '',
         maxPrice: '',
         bedrooms: '',
+        bedrooms: '',
         minSize: '',
-        maxSize: ''
+        maxSize: '',
+        minLandArea: '',
+        maxLandArea: ''
     });
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -35,7 +38,10 @@ const Rent = () => {
                 if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
                 if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
                 if (filters.minSize) params.append('minSize', filters.minSize);
+                if (filters.minSize) params.append('minSize', filters.minSize);
                 if (filters.maxSize) params.append('maxSize', filters.maxSize);
+                if (filters.minLandArea) params.append('minLandArea', filters.minLandArea);
+                if (filters.maxLandArea) params.append('maxLandArea', filters.maxLandArea);
 
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?${params.toString()}`);
                 const data = await response.json();
@@ -66,9 +72,11 @@ const Rent = () => {
         const initialBedrooms = searchParams.get('bedrooms');
         const initialMinSize = searchParams.get('minSize');
         const initialMaxSize = searchParams.get('maxSize');
+        const initialMinLandArea = searchParams.get('minLandArea');
+        const initialMaxLandArea = searchParams.get('maxLandArea');
 
         // Pre-fill filters from URL if present and not already set
-        if (initialSearch || initialType || initialMinPrice || initialMaxPrice || initialBedrooms || initialMinSize || initialMaxSize) {
+        if (initialSearch || initialType || initialMinPrice || initialMaxPrice || initialBedrooms || initialMinSize || initialMaxSize || initialMinLandArea || initialMaxLandArea) {
             setFilters(prev => ({
                 ...prev,
                 search: initialSearch || prev.search,
@@ -114,7 +122,7 @@ const Rent = () => {
     }, [currentPage]);
 
     return (
-        <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="min-h-screen pt-24 bg-slate-50 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <SEO title="Properties for Rent" description="Find your perfect rental home from our listings." />
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-slate-900">Properties for Rent</h1>
@@ -158,7 +166,7 @@ const Rent = () => {
                                     We couldn't find any properties matching "{filters.search}".
                                 </p>
                                 <button
-                                    onClick={() => setFilters({ search: '', type: '', minPrice: '', maxPrice: '', bedrooms: '', minSize: '', maxSize: '' })}
+                                    onClick={() => setFilters({ search: '', type: '', minPrice: '', maxPrice: '', bedrooms: '', minSize: '', maxSize: '', minLandArea: '', maxLandArea: '' })}
                                     className="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
                                 >
                                     Clear All Filters

@@ -279,7 +279,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
             "https://images.unsplash.com/photo-1600596542815-3ad30919236b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/7578552/7578552-uhd_3840_2160_30fps.mp4"
+        ],
         isNewLaunch: true,
         category: "Buy",
     },
@@ -298,7 +300,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
             "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/3760968/3760968-hd_1920_1080_25fps.mp4"
+        ],
         isNewLaunch: true,
         category: "New Launch",
     },
@@ -315,7 +319,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
             "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Rent",
     },
@@ -332,7 +338,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
             "https://images.unsplash.com/photo-1592595896551-12b371d546d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/5334464/5334464-uhd_3840_2160_25fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Buy",
     },
@@ -349,7 +357,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/3196344/3196344-uhd_3840_2160_25fps.mp4"
+        ],
         isNewLaunch: true,
         category: "New Launch",
     },
@@ -366,7 +376,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/5524220/5524220-uhd_3840_2160_25fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Rent",
     },
@@ -383,7 +395,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
             "https://images.unsplash.com/photo-1600585153490-76fb20a32601?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/856958/856958-hd_1920_1080_25fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Buy",
     },
@@ -400,7 +414,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/7578546/7578546-uhd_3840_2160_30fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Buy",
     },
@@ -417,7 +433,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
             "https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/3760968/3760968-hd_1920_1080_25fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Rent",
     },
@@ -434,7 +452,9 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
             "https://images.unsplash.com/photo-1592595896551-12b371d546d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4"
+        ],
         isNewLaunch: true,
         category: "New Launch",
     },
@@ -451,9 +471,12 @@ const seedProperties = [
             "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1502005229766-939cb93c597d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
-        videos: [],
+        videos: [
+            "https://videos.pexels.com/video-files/5334464/5334464-uhd_3840_2160_25fps.mp4"
+        ],
         isNewLaunch: false,
         category: "Buy",
+        landArea: 956 // Condo usually implies built-up, but for schema consistency
     }
 ];
 

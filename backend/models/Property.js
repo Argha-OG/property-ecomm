@@ -9,6 +9,7 @@ const propertySchema = new mongoose.Schema({
     bathrooms: { type: Number, required: true },
     area: { type: String, required: true },
     areaSize: { type: Number }, // Added for filtering
+    landArea: { type: Number }, // SRS Requirement: Land Area
     images: [{ type: String }], // Up to 12 images
     videos: [{ type: String }], // Up to 3 videos
     isNewLaunch: { type: Boolean, default: false },

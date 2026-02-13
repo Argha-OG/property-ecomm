@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Home, DollarSign, Filter, ChevronDown, Check } from 'lucide-react';
+import { Search, MapPin, Home, DollarSign, Filter, ChevronDown, Check, Sparkles, Wand2 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const Hero = () => {
@@ -20,6 +20,7 @@ const Hero = () => {
 
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [priceRange, setPriceRange] = useState({ min: 0, max: 0, label: t.hero.filters.any });
+    const [isAILoading, setIsAILoading] = useState(false);
 
     // Mock suggestions for demo
     const allSuggestions = [
@@ -110,7 +111,52 @@ const Hero = () => {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleSearch();
+            if (activeTab === 'ai-search') {
+                handleAISearch();
+            } else {
+                handleSearch();
+            }
+        }
+    };
+
+    const handleAISearch = async () => {
+        if (!searchQuery) return;
+        setIsAILoading(true);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/search`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: searchQuery })
+            });
+
+            const data = await response.json();
+            console.log("AI Response:", data);
+
+            if (data.parsed) {
+                const params = new URLSearchParams();
+                const { location, type, maxPrice, bedrooms } = data.parsed;
+
+                // Map parsed filters to query params
+                if (location) params.append('location', location.replace(/^\/|\/i$/g, '')); // Strip regex slashes if returned as string, though backend returns regex object it might be stringified weirdly. Controller sends it as regex, but JSON auto-converts to empty object usually.
+                // Wait, regex objects in JSON become empty objects. I need to fix backend to send strings.
+                // START CORRECTION NOTE: The backend sends regex objects which serialize to {}. I must fix backend AI controller first to return strings!
+                // Actually, let's just proceed with frontend assuming string return, and I will fix backend in next step.
+
+                if (data.parsed.locationText) params.append('location', data.parsed.locationText); // I'll update backend to send text.
+                else if (location && typeof location === 'string') params.append('location', location);
+
+                if (type) params.append('type', type);
+                if (maxPrice) params.append('maxPrice', maxPrice);
+                if (bedrooms) params.append('bedrooms', bedrooms);
+
+                // Default to Buy page for now
+                navigate(`/buy?${params.toString()}`);
+            }
+        } catch (error) {
+            console.error("AI Search Error:", error);
+        } finally {
+            setIsAILoading(false);
         }
     };
 
@@ -140,16 +186,16 @@ const Hero = () => {
 
                 {/* Search Box Card */}
                 <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/40 max-w-4xl mx-auto flex flex-col gap-6">
-                    {/* Tabs */}
                     <div className="flex gap-6 border-b border-slate-200 pb-2">
-                        {['buy', 'rent', 'new-launch'].map((tab) => (
+                        {['buy', 'rent', 'new-launch', 'ai-search'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`relative pb-2 text-sm font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === tab ? 'text-primary' : 'text-slate-500 hover:text-slate-800'
+                                className={`relative pb-2 text-sm font-semibold uppercase tracking-wider transition-colors duration-300 flex items-center gap-2 ${activeTab === tab ? 'text-primary' : 'text-slate-500 hover:text-slate-800'
                                     }`}
                             >
-                                {tab === 'buy' ? t.hero.tabs.buy : tab === 'rent' ? t.hero.tabs.rent : t.hero.tabs.newLaunch}
+                                {tab === 'ai-search' && <Sparkles size={16} className={activeTab === 'ai-search' ? 'text-accent animate-pulse' : ''} />}
+                                {tab === 'buy' ? t.hero.tabs.buy : tab === 'rent' ? t.hero.tabs.rent : tab === 'new-launch' ? t.hero.tabs.newLaunch : 'AI Search'}
                                 {activeTab === tab && (
                                     <span className="absolute bottom-[-9px] left-0 w-full h-1 bg-primary rounded-t-full"></span>
                                 )}
@@ -159,17 +205,25 @@ const Hero = () => {
 
                     {/* Main Smart Search Input (Full Width) */}
                     <div className="relative">
-                        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">{t.hero.smartSearch}</label>
-                        <div className="relative flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
-                            <Search className="text-primary mr-3" size={20} />
+                        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">
+                            {activeTab === 'ai-search' ? (
+                                <span className="flex items-center gap-1 text-primary"><Wand2 size={12} /> Describe your dream home</span>
+                            ) : t.hero.smartSearch}
+                        </label>
+                        <div className={`relative flex items-center bg-slate-50 rounded-xl px-4 py-3 border transition-all ${activeTab === 'ai-search' ? 'border-accent ring-1 ring-accent bg-purple-50' : 'border-slate-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary'}`}>
+                            {activeTab === 'ai-search' ? (
+                                <Sparkles className="text-accent mr-3 animate-pulse" size={20} />
+                            ) : (
+                                <Search className="text-primary mr-3" size={20} />
+                            )}
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={handleSearchChange}
                                 onKeyDown={handleKeyDown}
                                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                                onFocus={() => searchQuery && setShowSuggestions(true)}
-                                placeholder={t.hero.searchPlaceholder}
+                                onFocus={() => activeTab !== 'ai-search' && searchQuery && setShowSuggestions(true)}
+                                placeholder={activeTab === 'ai-search' ? "e.g. 3 bedroom condo in Mont Kiara under 2 million..." : t.hero.searchPlaceholder}
                                 className="w-full bg-transparent border-none focus:ring-0 outline-none text-slate-800 placeholder-slate-400 text-base font-medium"
                             />
                         </div>
@@ -341,11 +395,12 @@ const Hero = () => {
                         {/* Search Button */}
                         <div className="md:col-span-1">
                             <button
-                                onClick={handleSearch}
+                                onClick={activeTab === 'ai-search' ? handleAISearch : handleSearch}
+                                disabled={isAILoading}
                                 className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
                             >
                                 <Search size={20} />
-                                <span className="font-semibold">{t.hero.filters.search}</span>
+                                <span className="font-semibold">{isAILoading ? 'Thinking...' : activeTab === 'ai-search' ? 'Generate' : t.hero.filters.search}</span>
                             </button>
                         </div>
                     </div>

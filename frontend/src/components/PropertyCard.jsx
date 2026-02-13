@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MapPin, Bed, Bath, Layout, Heart, Phone, MessageCircle } from 'lucide-react';
+import { MapPin, Bed, Bath, Layout, Heart, Phone, MessageCircle, ArrowRightLeft } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useComparison } from '../context/ComparisonContext';
 
 const PropertyCard = ({ property }) => {
     const navigate = useNavigate();
     const [isSaved, setIsSaved] = useState(false);
+    const { addToCompare, compareList } = useComparison();
+    const isInCompare = compareList.some(p => p._id === property._id);
 
     const handleCardClick = () => {
         navigate(`/property/${property._id}`);
@@ -15,6 +18,15 @@ const PropertyCard = ({ property }) => {
         e.stopPropagation();
         setIsSaved(!isSaved);
         toast.success(isSaved ? 'Removed from favourites' : 'Saved to favourites');
+    };
+
+    const handleCompare = (e) => {
+        e.stopPropagation();
+        if (!isInCompare) {
+            addToCompare(property);
+        } else {
+            toast('Already in comparison', { icon: 'ℹ️' });
+        }
     };
 
     const handleContact = (e) => {
@@ -44,13 +56,21 @@ const PropertyCard = ({ property }) => {
                             New Launch
                         </div>
                     )}
+
                 </div>
 
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
 
                 {/* Quick Actions Overlay (Visible on Hover) - Just Heart */}
-                <div className="absolute top-4 right-4 z-10">
+                <div className="absolute top-4 right-4 z-10 flex gap-2">
+                    <button
+                        onClick={handleCompare}
+                        className={`p-2 rounded-full shadow-lg transition-colors ${isInCompare ? 'bg-primary text-white' : 'bg-white/90 backdrop-blur-sm text-slate-700 hover:text-primary'}`}
+                        title="Compare"
+                    >
+                        <ArrowRightLeft size={18} />
+                    </button>
                     <button
                         onClick={handleSave}
                         className={`p-2 rounded-full shadow-lg transition-colors ${isSaved ? 'bg-red-500 text-white' : 'bg-white/90 backdrop-blur-sm text-slate-700 hover:text-red-500'}`}

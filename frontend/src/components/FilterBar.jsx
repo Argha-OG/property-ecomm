@@ -227,7 +227,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
 
             {/* Advanced Filters */}
             {advancedOpen && (
-                <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-down">
+                <div className="pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-down">
                     <div>
                         <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase">Bedrooms</label>
                         <div className="flex gap-2">
@@ -235,7 +235,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                                 <button
                                     key={opt}
                                     onClick={() => onFilterChange('bedrooms', opt === 'Any' ? '' : opt)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${(initialFilters?.bedrooms === opt || (opt === 'Any' && !initialFilters?.bedrooms))
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${(initialFilters?.bedrooms === opt || (opt === 'Any' && !initialFilters?.bedrooms))
                                         ? 'bg-primary text-white border-primary'
                                         : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-primary'
                                         }`}
@@ -246,11 +246,11 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase">Size (sqft)</label>
-                        <div className="flex items-center gap-3">
+                        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase">Built-up Size (sqft)</label>
+                        <div className="flex items-center gap-2">
                             <input
                                 type="number"
-                                placeholder="Min Size"
+                                placeholder="Min"
                                 value={initialFilters?.minSize || ''}
                                 onChange={(e) => onFilterChange('minSize', e.target.value)}
                                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
@@ -258,9 +258,29 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                             <span className="text-slate-400">-</span>
                             <input
                                 type="number"
-                                placeholder="Max Size"
+                                placeholder="Max"
                                 value={initialFilters?.maxSize || ''}
                                 onChange={(e) => onFilterChange('maxSize', e.target.value)}
+                                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase">Land Area (sqft)</label>
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="number"
+                                placeholder="Min"
+                                value={initialFilters?.minLandArea || ''}
+                                onChange={(e) => onFilterChange('minLandArea', e.target.value)}
+                                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
+                            />
+                            <span className="text-slate-400">-</span>
+                            <input
+                                type="number"
+                                placeholder="Max"
+                                value={initialFilters?.maxLandArea || ''}
+                                onChange={(e) => onFilterChange('maxLandArea', e.target.value)}
                                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-primary"
                             />
                         </div>

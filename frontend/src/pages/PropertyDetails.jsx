@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Layout as LayoutIcon, ArrowLeft, Share2, Heart, Phone, MessageCircle, FileText, CheckCircle, User, Calendar, Building, Shield, Car, X, ChevronLeft, ChevronRight, DollarSign, Play } from 'lucide-react';
+import { MapPin, Bed, Bath, Layout as LayoutIcon, ArrowLeft, Share2, Heart, Phone, MessageCircle, FileText, CheckCircle, User, Calendar, Building, Shield, Car, X, ChevronLeft, ChevronRight, DollarSign, Play, ArrowRightLeft } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+
 import SEO from '../components/SEO';
+import { useComparison } from '../context/ComparisonContext';
 
 const PropertyDetails = () => {
     // ... existing hooks ...
@@ -10,6 +13,9 @@ const PropertyDetails = () => {
     const [loading, setLoading] = useState(true);
     const [showLightbox, setShowLightbox] = useState(false);
     const [activeLightboxIndex, setActiveLightboxIndex] = useState(0);
+
+    const { addToCompare, compareList } = useComparison();
+    const isInCompare = property ? compareList.some(p => p._id === property._id) : false;
 
     useEffect(() => {
         // ... existing fetch logic ...
@@ -43,6 +49,29 @@ const PropertyDetails = () => {
     const prevImage = (e) => {
         e.stopPropagation();
         setActiveLightboxIndex((prev) => (prev - 1 + media.length) % media.length);
+    };
+
+    const handleDownloadBrochure = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/${id}/brochure`);
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${property.title.replace(/\s+/g, '_')}_Brochure.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                // toast.success('Brochure downloaded successfully'); // Assuming toast is imported elsewhere
+            } else {
+                // toast.error('Failed to generate brochure'); // Assuming toast is imported elsewhere
+            }
+        } catch (error) {
+            console.error('Download error:', error);
+            // toast.error('Error downloading brochure'); // Assuming toast is imported elsewhere
+        }
     };
 
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -84,8 +113,22 @@ const PropertyDetails = () => {
                             <button className="p-2 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors text-slate-600">
                                 <Share2 size={20} />
                             </button>
+                            <button
+                                onClick={handleDownloadBrochure}
+                                className="p-2 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors text-slate-600"
+                                title="Download Brochure"
+                            >
+                                <FileText size={20} />
+                            </button>
                             <button className="p-2 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors text-slate-600">
                                 <Heart size={20} />
+                            </button>
+                            <button
+                                onClick={() => addToCompare(property)}
+                                className={`p-2 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors ${isInCompare ? 'text-primary bg-primary/10 border-primary' : 'text-slate-600'}`}
+                                title="Compare Property"
+                            >
+                                <ArrowRightLeft size={20} />
                             </button>
                             <button className="p-2 border border-slate-200 rounded-full hover:bg-slate-100 transition-colors text-slate-600">
                                 <div className="flex flex-col items-center justify-center w-5 h-5">

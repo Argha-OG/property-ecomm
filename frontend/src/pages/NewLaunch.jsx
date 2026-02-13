@@ -60,7 +60,7 @@ const NewLaunch = () => {
     }, [currentPage]);
 
     return (
-        <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <SEO title="New Launches" description="Discover the latest property launches and developments." />
             <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                 <div>

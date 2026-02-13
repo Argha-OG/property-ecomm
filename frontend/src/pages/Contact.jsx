@@ -32,7 +32,7 @@ const Contact = () => {
     };
 
     return (
-        <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <div className="text-center mb-16">
                 <h1 className="text-4xl font-bold text-primary mb-4">Get in Touch</h1>
                 <p className="text-slate-600 max-w-2xl mx-auto">

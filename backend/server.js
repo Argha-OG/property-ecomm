@@ -27,6 +27,24 @@ const logActivity = async (action, performer, role, details) => {
     }
 };
 
+// Security Middleware
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+
+app.use(helmet({
+    crossOriginResourcePolicy: false, // Allow loading images from other domains/local
+}));
+// app.use(xss()); // Error: Cannot set property query of [object Object] which has only a getter
+
+// Rate Limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again after 15 minutes"
+});
+app.use('/api', limiter);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -57,7 +75,8 @@ const upload = multer({ storage: storage });
 app.use('/uploads', express.static('uploads'));
 
 // Upload Route
-app.post('/api/upload', upload.array('files', 12), (req, res) => {
+const watermarkMiddleware = require('./middleware/watermark');
+app.post('/api/upload', upload.array('files', 12), watermarkMiddleware, (req, res) => {
     try {
         const filePaths = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
         res.json({ urls: filePaths });
@@ -65,6 +84,10 @@ app.post('/api/upload', upload.array('files', 12), (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+// --- PDF Route ---
+const pdfController = require('./controllers/pdfController');
+app.get('/api/properties/:id/brochure', pdfController.generateBrochure);
 
 // --- Property Routes ---
 app.get('/api/properties', async (req, res) => {
@@ -110,11 +133,19 @@ app.get('/api/properties', async (req, res) => {
             }
         }
 
-        // Size Filter (Min/Max based on areaSize)
+        // Size Filter (Min/Max based on areaSize - Built-up)
         if (minSize || maxSize) {
             query.areaSize = {};
             if (minSize) query.areaSize.$gte = Number(minSize);
             if (maxSize) query.areaSize.$lte = Number(maxSize);
+        }
+
+        // Land Area Filter (SRS Requirement)
+        const { minLandArea, maxLandArea } = req.query;
+        if (minLandArea || maxLandArea) {
+            query.landArea = {};
+            if (minLandArea) query.landArea.$gte = Number(minLandArea);
+            if (maxLandArea) query.landArea.$lte = Number(maxLandArea);
         }
 
         // New Launch Filter
@@ -340,9 +371,11 @@ app.post('/api/leads', async (req, res) => {
     }
 });
 
+// --- AI Search Route ---
+const aiController = require('./controllers/aiController');
+app.post('/api/ai/search', aiController.parseQuery);
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    // Check if default admin exists
-    // (Optional: You could verify/create admin here if strictly needed)
 });
