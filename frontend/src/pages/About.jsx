@@ -16,7 +16,7 @@ const About = () => {
                 description="Learn more about Demo JK Properties, our mission, vision, and the team behind our success."
             />
             {/* Hero Section */}
-            <div className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-slate-900 text-white overflow-hidden">
+            <div className="relative pt-36 sm:pt-40 pb-20 px-4 sm:px-6 lg:px-8 bg-slate-900 text-white overflow-hidden">
                 <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center"></div>
                 <div className="relative max-w-7xl mx-auto text-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6">Redefining Luxury Real Estate</h1>

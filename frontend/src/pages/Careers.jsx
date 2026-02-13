@@ -55,7 +55,7 @@ const Careers = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-24 pb-16 px-4">
+        <div className="min-h-screen bg-slate-50 pt-28 sm:pt-32 pb-16 px-4">
             {/* ... (keep existing JSX) */}
             <div className="max-w-4xl mx-auto space-y-8">
                 <div className="text-center space-y-4">

@@ -44,7 +44,7 @@ const Calculators = () => {
     const totalInterest = totalPayment - loanAmount;
 
     return (
-        <div className="pt-24 pb-16 min-h-screen bg-slate-50 px-3 sm:px-4">
+        <div className="pt-28 sm:pt-32 pb-16 min-h-screen bg-slate-50 px-3 sm:px-4">
             <SEO title="Mortgage Calculator" description="Calculate your estimated monthly mortgage payments." />
 
             <div className="max-w-4xl mx-auto">

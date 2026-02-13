@@ -64,7 +64,7 @@ const Navbar = () => {
 
     return (
         <div className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'pt-2 sm:pt-4 pb-1 sm:pb-2' : 'pt-3 sm:pt-6 pb-2 sm:pb-4'}`}>
-            <nav className={`max-w-7xl mx-auto px-3 sm:px-6 rounded-2xl sm:rounded-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg py-2 sm:py-2' : 'bg-white/90 backdrop-blur-sm py-2.5 sm:py-3'}`}>
+            <nav className={`relative z-50 max-w-7xl mx-auto px-3 sm:px-6 rounded-2xl sm:rounded-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg py-2 sm:py-2' : 'bg-white/90 backdrop-blur-sm py-2.5 sm:py-3'} ${isOpen ? 'bg-white shadow-lg' : ''}`}>
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 flex-shrink-0" onClick={() => setIsOpen(false)}>
@@ -162,13 +162,14 @@ const Navbar = () => {
                 </div>
             </nav>
 
+
             {/* Mobile Menu Overlay */}
             {isOpen && (
                 <div
-                    className="md:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-xl animate-fade-in"
+                    className="md:hidden fixed top-0 left-0 right-0 bottom-0 z-40 bg-white/95 backdrop-blur-xl animate-fade-in mt-20"
                     onClick={() => setIsOpen(false)}
                 >
-                    <div className="pt-20 px-6 pb-6 overflow-y-auto h-full">
+                    <div className="px-6 py-6 overflow-y-auto h-full">
                         <div className="flex flex-col space-y-4" onClick={(e) => e.stopPropagation()}>
                             {navLinks.map((link) => (
                                 <div key={link.name} className="border-b border-slate-100 pb-4">

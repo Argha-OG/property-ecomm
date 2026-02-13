@@ -167,10 +167,10 @@ const Hero = () => {
     };
 
     return (
-        <div className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center z-20">
+        <div className="relative w-full h-[700px] md:h-[800px] flex items-center justify-center z-20 pt-32 sm:pt-36 mb-8">
             {/* Background Image with Overlay */}
             <div
-                className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat overflow-hidden"
+                className="absolute inset-0 -top-20 sm:-top-24 z-0 bg-cover bg-center bg-no-repeat overflow-hidden"
                 style={{
                     backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
                 }}
