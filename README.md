@@ -1,5 +1,13 @@
 # Property Ecommerce Platform (Demo JK)
 
+## 🌐 Live Demo & API
+
+| Component | URL | Status |
+|-----------|-----|--------|
+| **Frontend** | [https://property-ecomm.vercel.app](https://property-ecomm.vercel.app) | 🟢 Live |
+| **Backend API** | [https://property-ecomm-backend.vercel.app](https://property-ecomm-backend.vercel.app) | 🟢 Live |
+| **Admin Panel** | [https://property-ecomm.vercel.app/admin/login](https://property-ecomm.vercel.app/admin/login) | 🔒 Protected |
+
 ## 📌 Project Overview
 The **Demo JK Property Platform** is a modern, full-stack real estate application designed to revolutionize how users discover, buy, and rent properties. Built with the MERN stack and enhanced with AI capabilities, it offers valid search tools, financial calculators, and a seamless comparison engine, all wrapped in a stunning glassmorphism UI.
 
