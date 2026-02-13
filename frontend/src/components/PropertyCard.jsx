@@ -37,7 +37,7 @@ const PropertyCard = ({ property }) => {
     return (
         <div
             onClick={handleCardClick}
-            className="group glass-card overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+            className="group glass-card overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 mx-auto"
             data-aos="fade-up"
         >
             {/* Image Container */}

@@ -63,8 +63,8 @@ const Navbar = () => {
     };
 
     return (
-        <div className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'pt-4 pb-2' : 'pt-6 pb-4'}`}>
-            <nav className={`max-w-7xl mx-auto px-6 rounded-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg py-2' : 'bg-white/90 backdrop-blur-sm py-3'}`}>
+        <div className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'pt-2 sm:pt-4 pb-1 sm:pb-2' : 'pt-3 sm:pt-6 pb-2 sm:pb-4'}`}>
+            <nav className={`max-w-7xl mx-auto px-3 sm:px-6 rounded-2xl sm:rounded-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg py-2 sm:py-2' : 'bg-white/90 backdrop-blur-sm py-2.5 sm:py-3'}`}>
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 flex-shrink-0">
@@ -148,13 +148,13 @@ const Navbar = () => {
                     <div className="flex md:hidden items-center gap-2">
                         <button
                             onClick={toggleLanguage}
-                            className="p-2 text-slate-700 hover:text-primary rounded-full hover:bg-slate-100 focus:outline-none"
+                            className="px-3 py-2 text-slate-700 hover:text-primary rounded-full hover:bg-slate-100 focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center"
                         >
                             <span className="text-xs font-bold uppercase">{language === 'en' ? 'EN' : 'BM'}</span>
                         </button>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="p-2 text-slate-700 hover:text-primary rounded-full hover:bg-slate-100 focus:outline-none"
+                            className="p-2 text-slate-700 hover:text-primary rounded-full hover:bg-slate-100 focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center"
                         >
                             {isOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>

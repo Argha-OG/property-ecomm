@@ -93,8 +93,8 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
     };
 
     return (
-        <div className="bg-white p-4 rounded-2xl shadow-lg border border-slate-100 mb-8 z-40 relative">
-            <div className="flex flex-col md:flex-row gap-4 mb-4">
+        <div className="bg-white p-3 sm:p-4 rounded-2xl shadow-lg border border-slate-100 mb-8 z-40 relative">
+            <div className="flex flex-col md:flex-row gap-3 sm:gap-4 mb-4">
                 {/* Search Input */}
                 <div className="flex-1 relative z-20">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -106,7 +106,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                         onFocus={() => searchQuery.length > 1 && setShowSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                         placeholder="Search area, property name, developer..."
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 outline-none text-slate-700 font-medium"
+                        className="w-full pl-10 pr-4 py-3 sm:py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 outline-none text-slate-700 font-medium min-h-[48px]"
                     />
                     {showSuggestions && suggestions.length > 0 && (
                         <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-xl mt-2 p-2 max-h-80 overflow-y-auto border border-slate-100">
@@ -114,7 +114,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                                 <button
                                     key={idx}
                                     onClick={() => selectSuggestion(item)}
-                                    className="w-full text-left px-3 py-3 hover:bg-slate-50 rounded-lg flex items-center gap-3 transition-colors group border-b border-slate-50 last:border-0"
+                                    className="w-full text-left px-3 py-3 hover:bg-slate-50 rounded-lg flex items-center gap-3 transition-colors group border-b border-slate-50 last:border-0 min-h-[44px]"
                                 >
                                     {/* Thumbnail or Icon */}
                                     <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-slate-100 flex items-center justify-center border border-slate-200">
@@ -145,7 +145,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                 <div className="relative md:w-48 z-10">
                     <Home className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <select
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 outline-none text-slate-700 appearance-none cursor-pointer font-medium"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 outline-none text-slate-700 appearance-none cursor-pointer font-medium min-h-[48px]"
                         onChange={(e) => onFilterChange('type', e.target.value)}
                         value={initialFilters?.type || ''}
                     >
@@ -165,7 +165,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                 <div className="relative md:w-56 z-20">
                     <div
                         onClick={() => setPriceDropdownOpen(!priceDropdownOpen)}
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 outline-none text-slate-700 cursor-pointer flex items-center justify-between font-medium"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 outline-none text-slate-700 cursor-pointer flex items-center justify-between font-medium min-h-[48px]"
                     >
                         <div className="flex items-center gap-2 overflow-hidden">
                             <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -185,14 +185,14 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                                         type="number"
                                         placeholder="Min"
                                         onChange={(e) => onFilterChange('minPrice', e.target.value)}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-sm outline-none focus:border-primary"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-sm outline-none focus:border-primary min-h-[44px]"
                                     />
                                     <span className="text-slate-400">-</span>
                                     <input
                                         type="number"
                                         placeholder="Max"
                                         onChange={(e) => onFilterChange('maxPrice', e.target.value)}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-sm outline-none focus:border-primary"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-sm outline-none focus:border-primary min-h-[44px]"
                                     />
                                 </div>
                             </div>
@@ -205,7 +205,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                                         onFilterChange('maxPrice', range.max);
                                         setPriceDropdownOpen(false);
                                     }}
-                                    className="w-full text-left px-3 py-2 hover:bg-slate-50 rounded-lg text-sm text-slate-700 flex items-center justify-between"
+                                    className="w-full text-left px-3 py-2 hover:bg-slate-50 rounded-lg text-sm text-slate-700 flex items-center justify-between min-h-[44px]"
                                 >
                                     {range.label}
                                 </button>
@@ -217,7 +217,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                 {/* Advanced Toggle */}
                 <button
                     onClick={() => setAdvancedOpen(!advancedOpen)}
-                    className={`px-4 py-3 rounded-xl border flex items-center gap-2 font-medium transition-colors ${advancedOpen ? 'bg-slate-100 border-slate-300 text-slate-900' : 'border-slate-200 text-slate-600 hover:border-primary hover:text-primary'}`}
+                    className={`px-4 py-3 rounded-xl border flex items-center gap-2 font-medium transition-colors min-h-[48px] ${advancedOpen ? 'bg-slate-100 border-slate-300 text-slate-900' : 'border-slate-200 text-slate-600 hover:border-primary hover:text-primary'}`}
                 >
                     <Filter size={20} />
                 </button>
@@ -225,7 +225,7 @@ const FilterBar = ({ onFilterChange, initialFilters }) => {
                 {/* Search Button */}
                 <button
                     onClick={handleSearch}
-                    className="bg-primary text-white p-3 rounded-xl hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center flex-shrink-0"
+                    className="bg-primary text-white p-3 rounded-xl hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30 flex items-center justify-center flex-shrink-0 min-h-[48px] min-w-[48px]"
                 >
                     <Search size={24} />
                 </button>

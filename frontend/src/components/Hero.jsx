@@ -180,24 +180,24 @@ const Hero = () => {
 
             {/* Content Container */}
             <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 md:pt-24">
-                <div className="text-center mb-10 animate-fade-in-up">
-                    <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight mb-6 animate-slide-up text-white drop-shadow-md">
+                <div className="text-center mb-6 sm:mb-10 animate-fade-in-up">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold leading-tight mb-4 sm:mb-6 animate-slide-up text-white drop-shadow-md">
                         {t.hero.title} <br />
                         <span className="text-accent">{t.hero.subtitle}</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-100 mb-8 max-w-xl mx-auto leading-relaxed animate-fade-in delay-200 drop-shadow-sm">
+                    <p className="text-base sm:text-lg md:text-xl text-slate-100 mb-6 sm:mb-8 max-w-xl mx-auto leading-relaxed animate-fade-in delay-200 drop-shadow-sm">
                         {t.hero.desc}
                     </p>
                 </div>
 
                 {/* Search Box Card */}
-                <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-white/40 max-w-4xl mx-auto flex flex-col gap-6">
-                    <div className="flex gap-6 border-b border-slate-200 pb-2">
+                <div className="bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl border border-white/40 max-w-4xl mx-auto flex flex-col gap-4 sm:gap-6">
+                    <div className="flex gap-3 sm:gap-6 border-b border-slate-200 pb-2 overflow-x-auto">
                         {['buy', 'rent', 'new-launch', 'ai-search'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`relative pb-2 text-sm font-semibold uppercase tracking-wider transition-colors duration-300 flex items-center gap-2 ${activeTab === tab ? 'text-primary' : 'text-slate-500 hover:text-slate-800'
+                                className={`relative pb-2 text-xs sm:text-sm font-semibold uppercase tracking-wider transition-colors duration-300 flex items-center gap-2 whitespace-nowrap flex-shrink-0 ${activeTab === tab ? 'text-primary' : 'text-slate-500 hover:text-slate-800'
                                     }`}
                             >
                                 {tab === 'ai-search' && <Sparkles size={16} className={activeTab === 'ai-search' ? 'text-accent animate-pulse' : ''} />}
@@ -272,14 +272,14 @@ const Hero = () => {
                     </div>
 
                     {/* Filters Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 items-end">
 
                         {/* Specific Location Input (Dropdown) */}
-                        <div className="relative md:col-span-1 border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0 md:pr-4">
+                        <div className="relative border-b sm:border-b-0 md:border-r border-slate-200 pb-3 sm:pb-4 md:pb-0 md:pr-4">
                             <label className="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">{t.hero.filters.location}</label>
                             <div
                                 onClick={() => toggleDropdown('location')}
-                                className="flex items-center justify-between gap-2 cursor-pointer group"
+                                className="flex items-center justify-between gap-2 cursor-pointer group min-h-[44px]"
                             >
                                 <div className="flex items-center gap-2 overflow-hidden">
                                     <MapPin className="text-slate-400 flex-shrink-0" size={18} />
