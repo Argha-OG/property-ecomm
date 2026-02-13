@@ -125,7 +125,7 @@ const Buy = () => {
     }, [currentPage]);
 
     return (
-        <div className="min-h-screen pt-24 bg-slate-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="min-h-screen pt-28 sm:pt-32 bg-slate-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <SEO title="Properties for Sale" description="Browse exclusive properties for sale in Malaysia." />
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-slate-900">Properties for Sale</h1>

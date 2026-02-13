@@ -67,11 +67,11 @@ const Navbar = () => {
             <nav className={`max-w-7xl mx-auto px-3 sm:px-6 rounded-2xl sm:rounded-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-lg py-2 sm:py-2' : 'bg-white/90 backdrop-blur-sm py-2.5 sm:py-3'}`}>
                 <div className="flex items-center justify-between">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+                    <Link to="/" className="flex items-center gap-2 flex-shrink-0" onClick={() => setIsOpen(false)}>
                         <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-md">
                             <span className="text-accent font-bold text-xl">R</span>
                         </div>
-                        <span className="text-primary font-serif font-bold text-xl tracking-tight hidden sm:block">
+                        <span className="text-primary font-serif font-bold text-lg sm:text-xl tracking-tight">
                             Demo JK
                         </span>
                     </Link>
@@ -164,44 +164,49 @@ const Navbar = () => {
 
             {/* Mobile Menu Overlay */}
             {isOpen && (
-                <div className="md:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-xl pt-24 px-6 overflow-y-auto animate-fade-in">
-                    <div className="flex flex-col space-y-4">
-                        {navLinks.map((link) => (
-                            <div key={link.name} className="border-b border-slate-100 pb-4">
-                                <Link
-                                    to={link.path}
-                                    className="text-xl font-bold text-slate-900 block mb-2"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    {link.name}
-                                </Link>
-                                {link.dropdown && (
-                                    <div className="pl-4 space-y-2 mt-2">
-                                        {link.dropdown.sections.map((section, idx) => (
-                                            <div key={idx}>
-                                                <p className="text-xs font-bold text-slate-400 uppercase mb-1">{section.title}</p>
-                                                <ul className="grid grid-cols-2 gap-2 mb-3">
-                                                    {section.items.map((item, i) => (
-                                                        <li key={i}>
-                                                            <Link
-                                                                to={`${link.path}?filter=${encodeURIComponent(item)}`}
-                                                                onClick={() => setIsOpen(false)}
-                                                                className="text-sm text-slate-600"
-                                                            >
-                                                                {item}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                        <Link to="/login" onClick={() => setIsOpen(false)} className="w-full py-4 bg-primary text-white rounded-2xl font-bold text-center shadow-lg">
-                            Login / Register
-                        </Link>
+                <div
+                    className="md:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-xl animate-fade-in"
+                    onClick={() => setIsOpen(false)}
+                >
+                    <div className="pt-20 px-6 pb-6 overflow-y-auto h-full">
+                        <div className="flex flex-col space-y-4" onClick={(e) => e.stopPropagation()}>
+                            {navLinks.map((link) => (
+                                <div key={link.name} className="border-b border-slate-100 pb-4">
+                                    <Link
+                                        to={link.path}
+                                        className="text-xl font-bold text-slate-900 block mb-2"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                    {link.dropdown && (
+                                        <div className="pl-4 space-y-2 mt-2">
+                                            {link.dropdown.sections.map((section, idx) => (
+                                                <div key={idx}>
+                                                    <p className="text-xs font-bold text-slate-400 uppercase mb-1">{section.title}</p>
+                                                    <ul className="grid grid-cols-2 gap-2 mb-3">
+                                                        {section.items.map((item, i) => (
+                                                            <li key={i}>
+                                                                <Link
+                                                                    to={`${link.path}?filter=${encodeURIComponent(item)}`}
+                                                                    onClick={() => setIsOpen(false)}
+                                                                    className="text-sm text-slate-600"
+                                                                >
+                                                                    {item}
+                                                                </Link>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                            <Link to="/login" onClick={() => setIsOpen(false)} className="w-full py-4 bg-primary text-white rounded-2xl font-bold text-center shadow-lg">
+                                Login / Register
+                            </Link>
+                        </div>
                     </div>
                 </div>
             )}
