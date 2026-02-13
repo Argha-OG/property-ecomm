@@ -20,11 +20,12 @@ const Hero = () => {
             {/* Content Container */}
             <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6">
                 <div className="text-center mb-10 animate-fade-in-up">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-md">
-                        Discover Your Dream <span className="text-accent">Sanctuary</span>
+                    <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight mb-6 animate-slide-up bg-gradient-to-r from-primary via-purple-700 to-accent bg-clip-text text-transparent drop-shadow-sm">
+                        Find Your Dream <br />
+                        <span className="text-slate-900">Sanctuary</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-100 max-w-2xl mx-auto drop-shadow-sm">
-                        Experience the pinnacle of luxury living with Rumajia's curated collection of premium properties.
+                    <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-xl mx-auto leading-relaxed animate-fade-in delay-200">
+                        Experience the pinnacle of luxury living with Demo JK's curated collection of premium properties.
                     </p>
                 </div>
 

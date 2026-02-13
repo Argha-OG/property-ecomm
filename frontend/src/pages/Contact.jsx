@@ -124,7 +124,7 @@ const Contact = () => {
                                 <Mail size={24} />
                             </div>
                             <p className="text-sm text-slate-500">Email</p>
-                            <p className="font-bold text-slate-800">hello@rumajia.com</p>
+                            <p className="font-bold text-slate-800">hello@demojk.com</p>
                         </div>
                     </div>
 

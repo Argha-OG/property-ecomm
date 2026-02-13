@@ -60,7 +60,7 @@ const Careers = () => {
                 <div className="text-center space-y-4">
                     <h1 className="text-4xl font-bold text-slate-800">Join Our Team</h1>
                     <p className="text-slate-600 max-w-2xl mx-auto">
-                        Build your career with Rumajia. We are looking for passionate individuals to help us redefine the real estate experience.
+                        Build your career with Demo JK. We are looking for passionate individuals to help us redefine the real estate experience.
                     </p>
                 </div>
 

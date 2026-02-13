@@ -31,25 +31,23 @@ const AdminJobs = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Only have POST and DELETE for now based on Plan, but let's assume I might add PUT later or just use POST for simplicity if reusing.
-            // Actually, I only added POST/DELETE in server.js. Let's stick to Create for now, or just Delete and Re-create.
-            // Wait, I should probably add PUT in server.js if I want edit. 
-            // For now, let's implement Create.
-            const url = `${API_URL}/api/jobs`; // Simplification: Only Add implemented fully in backend for now.
+            const url = editingId ? `${API_URL}/api/jobs/${editingId}` : `${API_URL}/api/jobs`;
+            const method = editingId ? 'PUT' : 'POST';
 
             const response = await fetch(url, {
-                method: 'POST',
+                method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData, requirements: formData.requirements.split(',').map(r => r.trim()) }),
+                body: JSON.stringify({ ...formData, requirements: typeof formData.requirements === 'string' ? formData.requirements.split(',').map(r => r.trim()) : formData.requirements }),
             });
 
             if (response.ok) {
                 fetchJobs();
                 setIsModalOpen(false);
                 setFormData({ title: '', type: 'Full-time', location: '', description: '', requirements: '', salary: '', status: 'Active' });
-                toast.success('Job posted successfully');
+                setEditingId(null);
+                toast.success(editingId ? 'Job updated successfully' : 'Job posted successfully');
             } else {
-                toast.error('Failed to post job');
+                toast.error('Failed to save job');
             }
         } catch (error) {
             console.error('Error saving job:', error);
@@ -70,6 +68,15 @@ const AdminJobs = () => {
         }
     };
 
+    const handleEdit = (job) => {
+        setFormData({
+            ...job,
+            requirements: Array.isArray(job.requirements) ? job.requirements.join(', ') : job.requirements
+        });
+        setEditingId(job._id);
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -77,7 +84,11 @@ const AdminJobs = () => {
                     <h1 className="text-2xl font-bold text-slate-800">Job Board</h1>
                     <p className="text-slate-500">Manage career opportunities.</p>
                 </div>
-                <button onClick={() => setIsModalOpen(true)} className="bg-primary text-white px-4 py-2.5 rounded-xl font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30">
+                <button onClick={() => {
+                    setEditingId(null);
+                    setFormData({ title: '', type: 'Full-time', location: '', description: '', requirements: '', salary: '', status: 'Active' });
+                    setIsModalOpen(true);
+                }} className="bg-primary text-white px-4 py-2.5 rounded-xl font-medium flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30">
                     <Plus size={18} /> Post Job
                 </button>
             </div>
@@ -112,7 +123,10 @@ const AdminJobs = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button onClick={() => handleDelete(job._id)} className="p-2 text-slate-400 hover:text-red-500"><Trash2 size={16} /></button>
+                                    <div className="flex justify-end gap-2">
+                                        <button onClick={() => handleEdit(job)} className="p-2 text-slate-400 hover:text-primary"><Edit2 size={16} /></button>
+                                        <button onClick={() => handleDelete(job._id)} className="p-2 text-slate-400 hover:text-red-500"><Trash2 size={16} /></button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -124,7 +138,7 @@ const AdminJobs = () => {
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-xl font-bold mb-4">Post New Job</h2>
+                        <h2 className="text-xl font-bold mb-4">{editingId ? 'Edit Job' : 'Post New Job'}</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <input required placeholder="Job Title" className="w-full p-2 border rounded" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} />
                             <div className="grid grid-cols-2 gap-4">
@@ -145,7 +159,7 @@ const AdminJobs = () => {
                             </select>
                             <div className="flex justify-end gap-2 mt-6">
                                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-slate-600">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-white rounded">Post Job</button>
+                                <button type="submit" className="px-4 py-2 bg-primary text-white rounded">{editingId ? 'Update Job' : 'Post Job'}</button>
                             </div>
                         </form>
                     </div>

@@ -23,8 +23,8 @@ const Navbar = () => {
                             <div className="w-10 h-10 bg-primary/90 rounded-lg flex items-center justify-center shadow-lg">
                                 <span className="text-accent font-bold text-xl">R</span>
                             </div>
-                            <span className="text-primary font-serif font-bold text-2xl tracking-tight hidden sm:block">
-                                Rumajia
+                            <span className="text-primary font-serif font-bold text-xl tracking-tight">
+                                Demo JK
                             </span>
                         </Link>
                     </div>

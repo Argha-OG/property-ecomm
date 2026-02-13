@@ -34,7 +34,7 @@ const AdminLayout = () => {
             <aside className="w-64 bg-white border-r border-slate-200 fixed h-full z-10 hidden md:flex flex-col">
                 <div className="p-6 border-b border-slate-100">
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        Rumajia Admin
+                        Demo JK Admin
                     </h1>
                 </div>
 

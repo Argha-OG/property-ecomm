@@ -14,7 +14,7 @@ const Footer = () => {
                                 <span className="text-accent font-bold text-lg">R</span>
                             </div>
                             <span className="text-primary font-serif font-bold text-xl">
-                                Rumajia
+                                Demo JK
                             </span>
                         </div>
                         <p className="text-slate-600 text-sm leading-relaxed">
@@ -78,7 +78,7 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-3 text-slate-600 text-sm">
                                 <Mail size={18} className="text-primary shrink-0" />
-                                <span>hello@rumajia.com</span>
+                                <span>hello@demojk.com</span>
                             </li>
                         </ul>
                     </div>
@@ -86,7 +86,7 @@ const Footer = () => {
 
                 <div className="border-t border-slate-200/60 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-slate-500 text-xs">
-                        © {new Date().getFullYear()} Rumajia by ZynoxBit. All rights reserved.
+                        © {new Date().getFullYear()} Demo JK by ZynoxBit. All rights reserved.
                     </p>
                     <div className="flex gap-6 text-slate-500 text-xs">
                         <a href="#" className="hover:text-primary">Privacy</a>

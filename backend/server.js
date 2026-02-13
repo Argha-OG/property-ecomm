@@ -47,7 +47,6 @@ app.post('/api/logs', async (req, res) => {
 
 // --- Job Routes ---
 app.get('/api/jobs', async (req, res) => {
-    // ... existing get code ...
     try {
         const jobs = await Job.find({ status: 'Active' }).sort({ createdAt: -1 });
         res.json(jobs);
@@ -76,11 +75,57 @@ app.post('/api/jobs', async (req, res) => {
     }
 });
 
+app.put('/api/jobs/:id', async (req, res) => {
+    try {
+        const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (updatedJob) await logActivity('UPDATE_JOB', 'Admin', 'Admin', `Updated job: ${updatedJob.title}`);
+        res.json(updatedJob);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
 app.delete('/api/jobs/:id', async (req, res) => {
     try {
         const job = await Job.findByIdAndDelete(req.params.id);
         if (job) await logActivity('DELETE_JOB', 'Admin', 'Admin', `Deleted job: ${job.title}`);
         res.json({ message: 'Job deleted' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// --- Property Routes (Rest of CRUD) ---
+// Note: GET is likely defined above this block in the original file, checking if I need to add it here or if I'm appending.
+// The previous view didn't show the GET /api/properties, implying it's earlier in the file. 
+// I will add the missing PUT/DELETE here.
+
+app.post('/api/properties', async (req, res) => {
+    try {
+        const newProperty = new Property(req.body);
+        const savedProperty = await newProperty.save();
+        await logActivity('CREATE_PROPERTY', 'Admin', 'Admin', `Created property: ${savedProperty.title}`);
+        res.status(201).json(savedProperty);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+app.put('/api/properties/:id', async (req, res) => {
+    try {
+        const updatedProperty = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (updatedProperty) await logActivity('UPDATE_PROPERTY', 'Admin', 'Admin', `Updated property: ${updatedProperty.title}`);
+        res.json(updatedProperty);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+app.delete('/api/properties/:id', async (req, res) => {
+    try {
+        const property = await Property.findByIdAndDelete(req.params.id);
+        if (property) await logActivity('DELETE_PROPERTY', 'Admin', 'Admin', `Deleted property: ${property.title}`);
+        res.json({ message: 'Property deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

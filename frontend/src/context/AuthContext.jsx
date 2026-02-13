@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
                 };
 
                 // Special check for Admin (hardcoded for now based on email, or check DB)
-                if (currentUser.email === 'admin@rumajia.com') {
+                if (currentUser.email === 'admin@demojk.com') {
                     userData.role = 'Start'; // Or 'admin'
                 }
 
@@ -83,8 +83,8 @@ export const AuthProvider = ({ children }) => {
         // Mock Login Logic
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
-                if (email === 'admin@rumajia.com' && password === 'admin123') {
-                    const userData = { name: 'Admin', email: 'admin@rumajia.com', role: 'admin' };
+                if (email === 'admin@demojk.com' && password === 'admin123') {
+                    const userData = { name: 'Admin', email: 'admin@demojk.com', role: 'admin' };
                     setUser(userData);
                     localStorage.setItem('adminUser', JSON.stringify(userData));
                     toast.success('Welcome back, Admin!');

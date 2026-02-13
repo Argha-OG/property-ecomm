@@ -15,7 +15,7 @@ const About = () => {
                 <div className="relative max-w-7xl mx-auto text-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6">Redefining Luxury Real Estate</h1>
                     <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-                        Rumajia connects discerning buyers with Malaysia's most exclusive properties, offering a seamless and premium experience from start to finish.
+                        Demo JK connects discerning buyers with Malaysia's most exclusive properties, offering a seamless and premium experience from start to finish.
                     </p>
                 </div>
             </div>
@@ -25,7 +25,7 @@ const About = () => {
                     <div>
                         <h2 className="text-3xl font-bold text-slate-900 mb-6">Our Story</h2>
                         <p className="text-slate-600 leading-relaxed mb-4">
-                            Founded in 2024, Rumajia began with a simple vision: to simplify the complex world of real estate while maintaining the highest standards of service and integrity.
+                            Founded in 2024, Demo JK began with a simple vision: to simplify the complex world of real estate while maintaining the highest standards of service and integrity.
                         </p>
                         <p className="text-slate-600 leading-relaxed">
                             We believe that finding a home is more than just a transaction; it's about finding a sanctuary that reflects your lifestyle and aspirations. Our team of dedicated professionals uses cutting-edge technology and deep market insights to guide you every step of the way.
