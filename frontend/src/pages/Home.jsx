@@ -59,7 +59,7 @@ const Home = () => {
                 ) : (
                     <>
                         {properties.length === 0 && (
-                            <div className="text-center text-red-500 my-4 p-4 border border-red-200 rounded-xl bg-red-50">
+                            <div className="text-center text-black my-8 p-4 text-lg font-medium">
                                 <p>No properties found.</p>
                             </div>
                         )}
