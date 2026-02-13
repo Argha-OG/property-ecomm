@@ -15,10 +15,17 @@ const Home = () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties`);
                 const data = await response.json();
-                setProperties(data.slice(0, 13)); // Fetch more to cover both sections without overlap
+                // Defensive check: ensure data is an array before slicing
+                if (Array.isArray(data)) {
+                    setProperties(data.slice(0, 13)); // Fetch more to cover both sections without overlap
+                } else {
+                    console.error('API returned non-array data:', data);
+                    setProperties([]);
+                }
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching properties:', error);
+                setProperties([]); // Ensure properties is always an array
                 setLoading(false);
             }
         };

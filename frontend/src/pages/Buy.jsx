@@ -41,23 +41,34 @@ const Buy = () => {
                 if (filters.minLandArea) params.append('minLandArea', filters.minLandArea);
                 if (filters.maxLandArea) params.append('maxLandArea', filters.maxLandArea);
 
+
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?${params.toString()}`);
                 const data = await response.json();
-                setProperties(data);
+                // Defensive check: ensure data is an array
+                if (Array.isArray(data)) {
+                    setProperties(data);
+                    setTotalPages(Math.ceil(data.length / itemsPerPage));
 
-                // Reset to page 1 if data changes significantly (handled by scroll to top logic usually)
-                // If no results found, fetch suggestions (latest 3)
-                if (data.length === 0) {
-                    const suggestionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?category=Buy&limit=3`);
-                    const suggestionsData = await suggestionsResponse.json();
-                    setSuggestedProperties(suggestionsData);
+                    // Reset to page 1 if data changes significantly (handled by scroll to top logic usually)
+                    // If no results found, fetch suggestions (latest 3)
+                    if (data.length === 0) {
+                        const suggestionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?category=Buy&limit=3`);
+                        const suggestionsData = await suggestionsResponse.json();
+                        if (Array.isArray(suggestionsData)) {
+                            setSuggestedProperties(suggestionsData);
+                        }
+                    } else {
+                        setSuggestedProperties([]);
+                    }
                 } else {
-                    setSuggestedProperties([]);
+                    console.error('API returned non-array data:', data);
+                    setProperties([]);
                 }
 
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching properties:', error);
+                setProperties([]);
                 setLoading(false);
             }
         };

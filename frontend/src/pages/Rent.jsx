@@ -43,20 +43,30 @@ const Rent = () => {
 
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?${params.toString()}`);
                 const data = await response.json();
-                setProperties(data);
+                // Defensive check: ensure data is an array
+                if (Array.isArray(data)) {
+                    setProperties(data);
+                    setTotalPages(Math.ceil(data.length / itemsPerPage));
 
-                // If no results found, fetch suggestions (latest 3)
-                if (data.length === 0) {
-                    const suggestionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?category=Rent&limit=3`);
-                    const suggestionsData = await suggestionsResponse.json();
-                    setSuggestedProperties(suggestionsData);
+                    // If no results found, fetch suggestions (latest 3)
+                    if (data.length === 0) {
+                        const suggestionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?category=Rent&limit=3`);
+                        const suggestionsData = await suggestionsResponse.json();
+                        if (Array.isArray(suggestionsData)) {
+                            setSuggestedProperties(suggestionsData);
+                        }
+                    } else {
+                        setSuggestedProperties([]);
+                    }
                 } else {
-                    setSuggestedProperties([]);
+                    console.error('API returned non-array data:', data);
+                    setProperties([]);
                 }
 
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching properties:', error);
+                setProperties([]);
                 setLoading(false);
             }
         };

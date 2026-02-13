@@ -20,10 +20,17 @@ const NewLaunch = () => {
 
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?isNewLaunch=true`);
                 const data = await response.json();
-                setProperties(data);
+                // Defensive check: ensure data is an array
+                if (Array.isArray(data)) {
+                    setProperties(data);
+                } else {
+                    console.error('API returned non-array data:', data);
+                    setProperties([]);
+                }
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching properties:', error);
+                setProperties([]);
                 setLoading(false);
             }
         };
