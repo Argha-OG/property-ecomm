@@ -28,10 +28,18 @@ const Dashboard = () => {
                     fetch(`${API_URL}/api/admin/jobs`)
                 ]);
 
-                const props = await propsRes.json();
-                const agents = await agentsRes.json();
-                const jobs = await jobsRes.json();
-                const leads = leadsRes.ok ? await leadsRes.json() : [];
+                const propsData = await propsRes.json();
+                const agentsData = await agentsRes.json();
+                const jobsData = await jobsRes.json();
+                const leadsData = leadsRes.ok ? await leadsRes.json() : [];
+
+                // Use empty arrays if data is not an array (e.g. error object)
+                const props = Array.isArray(propsData) ? propsData : [];
+                const agents = Array.isArray(agentsData) ? agentsData : [];
+                const jobs = Array.isArray(jobsData) ? jobsData : [];
+                const leads = Array.isArray(leadsData) ? leadsData : [];
+
+                console.log("Dashboard Data:", { props, agents, jobs, leads }); // Debug log
 
                 // Process Data for Charts
 
