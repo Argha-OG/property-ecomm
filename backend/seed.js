@@ -255,9 +255,9 @@ const seedProperties = [
         area: "2,000 sqft",
         areaSize: 2000,
         images: [
-            "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
             "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-            "https://images.unsplash.com/photo-1576941089067-2de3c901e126?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+            "https://images.unsplash.com/photo-1576941089067-2de3c901e126?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+            "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
         ],
         videos: [
             "https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4"
