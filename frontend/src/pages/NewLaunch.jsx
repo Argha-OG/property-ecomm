@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 import PropertyCard from '../components/PropertyCard';
 import Pagination from '../components/Pagination';
 import SEO from '../components/SEO';
@@ -18,8 +19,8 @@ const NewLaunch = () => {
                 const search = searchParams.get('search');
                 if (search) setSearchQuery(search);
 
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?isNewLaunch=true`);
-                const data = await response.json();
+                const response = await api.get('/api/properties?isNewLaunch=true');
+                const data = response.data;
                 // Defensive check: ensure data is an array
                 if (Array.isArray(data)) {
                     setProperties(data);

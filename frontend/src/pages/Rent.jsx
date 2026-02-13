@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import api from '../services/api';
 import PropertyCard from '../components/PropertyCard';
 import FilterBar from '../components/FilterBar';
 import Pagination from '../components/Pagination';
@@ -41,8 +42,8 @@ const Rent = () => {
                 if (filters.minLandArea) params.append('minLandArea', filters.minLandArea);
                 if (filters.maxLandArea) params.append('maxLandArea', filters.maxLandArea);
 
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?${params.toString()}`);
-                const data = await response.json();
+                const response = await api.get(`/api/properties?${params.toString()}`);
+                const data = response.data;
                 // Defensive check: ensure data is an array
                 if (Array.isArray(data)) {
                     setProperties(data);
@@ -50,10 +51,14 @@ const Rent = () => {
 
                     // If no results found, fetch suggestions (latest 3)
                     if (data.length === 0) {
-                        const suggestionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/properties?category=Rent&limit=3`);
-                        const suggestionsData = await suggestionsResponse.json();
-                        if (Array.isArray(suggestionsData)) {
-                            setSuggestedProperties(suggestionsData);
+                        try {
+                            const suggestionsResponse = await api.get('/api/properties?category=Rent&limit=3');
+                            const suggestionsData = suggestionsResponse.data;
+                            if (Array.isArray(suggestionsData)) {
+                                setSuggestedProperties(suggestionsData);
+                            }
+                        } catch (err) {
+                            console.error('Error fetching suggestions:', err);
                         }
                     } else {
                         setSuggestedProperties([]);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 import Hero from '../components/Hero';
 import HomePromo from '../components/HomePromo';
 import HomeProjects from '../components/HomeProjects';
@@ -13,8 +14,9 @@ const Home = () => {
     useEffect(() => {
         const fetchProperties = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties`);
-                const data = await response.json();
+                const response = await api.get('/api/properties');
+                const data = response.data;
+
                 // Defensive check: ensure data is an array before slicing
                 if (Array.isArray(data)) {
                     setProperties(data.slice(0, 13)); // Fetch more to cover both sections without overlap
@@ -55,11 +57,18 @@ const Home = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 items-stretch">
-                        {properties.slice(0, 9).map((property, index) => (
-                            <PropertyCard key={property._id} property={property} index={index} />
-                        ))}
-                    </div>
+                    <>
+                        {properties.length === 0 && (
+                            <div className="text-center text-red-500 my-4 p-4 border border-red-200 rounded-xl bg-red-50">
+                                <p>No properties found.</p>
+                            </div>
+                        )}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 items-stretch">
+                            {properties.slice(0, 9).map((property, index) => (
+                                <PropertyCard key={property._id} property={property} index={index} />
+                            ))}
+                        </div>
+                    </>
                 )}
             </section>
 

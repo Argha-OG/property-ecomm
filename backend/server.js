@@ -46,6 +46,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 
+app.use(cors()); // Allow all origins for debugging
 app.use(helmet({
     crossOriginResourcePolicy: false, // Allow loading images from other domains/local
 }));
